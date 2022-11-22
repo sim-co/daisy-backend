@@ -10,66 +10,28 @@ import APIError from "../util/apiError";
 import errors from "../util/errors";
 import jwt from "jsonwebtoken";
 import { verifyToken } from "../middleware/verifyToken";
+import passport from "passport";
+
 
 const router = Router();
 
-//회원가입
+// 네이버는 필수정보 항목에 체크를 하지 않아도 로그인이 된다. 필수 항목 또한 사용자가 선택할 수 있다는데, 그럼 선택이랑 다를게 없어 보이는데 왜 그랬는지 알 수 없다. 참고
 
-const postClient = async (req,res) => {
-    const { email, password, nickname } = req.body;
-  
-    // 이메일이 존재하는지 확인
-    if (await Client.exists({ email })) {
-      // 흐름때문에 에러 처리를, throw new APIError 하는 방향으로 합니다
-      throw new APIError(
-        errors.EMAIL_ALREADY_EXISTS.statusCode,
-        errors.EMAIL_ALREADY_EXISTS.errorCode,
-        errors.EMAIL_ALREADY_EXISTS.errorMsg
-      );
-    }
+// 이 부분은 서비스를 개발할 때 문제가 된다. 네아로에서 받은 이메일을 통해 서비스에 회원가입을 하는 로직이 있다면 서비스 서버에서는 오류를 내뱉을 것이다.
 
-    //닉네임이 존재하는지 확인
-    if (await Client.exists({ nickname })) {
-      throw new APIError(
-        errors.NICKNAME_ALREADY_EXISTS.statusCode,
-        errors.NICKNAME_ALREADY_EXISTS.errorCode,
-        errors.NICKNAME_ALREADY_EXISTS.errorMsg
-      )
-    }
-  
-    /**
-     * 비밀번호 sha256 해시걸기
-     * sha256:SHA-256은 현재 블록체인에서 가장 많이 채택하여 사용되고 있는 암호 방식이다. 출력 속도가 빠르다는 장점을 갖고 있다. 또한 단방향성의 성질을 띄고 있는 암호화 방법으로 복호화가 불가능하다. 
-     * 로그인 할때도 해시 암호화가 된 비밀번호와 비교해야 합니다
-     */ 
-    const hashedPassword = crypto
-      .createHash("sha256")
-      .update(password)
-      .digest("hex");
-  
-    const client = new Client();
-    client.email = email;
-    client.password = hashedPassword;
-    client.nickname = nickname;
-    //body에서 받아온 고객 정보를 데이터베이스에 저장.
-    await client.save();
-  
-    // 보통 생성시에 httpStatus 를 CREATED 로 전송합니다
-    res.status(httpStatus.CREATED).json(
-    { 
-        id: client.id 
-    });
-};
+// 필수임에도 동의 체크를 하지 않고 들어온 고객에 한하여 다시 동의창을 보여주는게 이상적으로 보인다.
 
-router.post(
-    "/",
-
-    body("email").not().isEmpty(),
-    body("password").not().isEmpty(),
-    body("nickname").not().isEmpty(),
-    validation,
-
-    asyncWrapper(postClient)
+//* 네이버로 로그인하기 라우터 ***********************
+router.get('/naver', passport.authenticate('naver', { authType: 'reprompt' }));
+ 
+//? 위에서 네이버 서버 로그인이 되면, 네이버 redirect url 설정에 따라 이쪽 라우터로 오게 된다.
+router.get(
+   '/naver/callback',
+   //? 그리고 passport 로그인 전략에 의해 naverStrategy로 가서 카카오계정 정보와 DB를 비교해서 회원가입시키거나 로그인 처리하게 한다.
+   passport.authenticate('naver', { failureRedirect: '/' }),
+   (req, res) => {
+      res.redirect('/');
+   },
 );
 
 export default router;
