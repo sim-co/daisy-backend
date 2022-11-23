@@ -1,5 +1,6 @@
 const { Sequelize } = require("sequelize");
-const Client = require("./client");
+const User = require("./User");
+const Client = require("./User");
 
 const env = process.env.NODE_ENV || "development";
 const config = require("../config/config.js")[env];
@@ -15,10 +16,10 @@ const sequelize = new Sequelize( //config의 db정보와 연결
 
 db.sequelize = sequelize;
 
-db.Client = Client;
+db.User = User;
 
-Client.init(sequelize);  
+User.init(sequelize);  
 
-Client.associate(db); 
+User.associate(db); 
 
 module.exports = db;
