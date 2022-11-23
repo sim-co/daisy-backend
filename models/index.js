@@ -1,8 +1,9 @@
-import Sequelize from "sequelize";
-import clients from "./Client";
+const { Sequelize } = require("sequelize");
+const Client = require("./client");
 
 const env = process.env.NODE_ENV || "development";
-const config = require(__dirname + "/../config/config.json")[env];
+const config = require("../config/config.js")[env];
+
 const db = {};
 
 const sequelize = new Sequelize( //config의 db정보와 연결
@@ -14,10 +15,10 @@ const sequelize = new Sequelize( //config의 db정보와 연결
 
 db.sequelize = sequelize;
 
-db.Client= clients;
+db.Client = Client;
 
-clients.init(sequelize);  
+Client.init(sequelize);  
 
-clients.associate(db); 
+Client.associate(db); 
 
 module.exports = db;

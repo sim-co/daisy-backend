@@ -1,6 +1,6 @@
-import Sequelize from "sequelize";
+const Sequelize = require('sequelize');
 
-module.exports = class clients extends Sequelize.Model{
+module.exports = class Client extends Sequelize.Model{
     static init(sequelize){
         return super.init({
             clientId: {
