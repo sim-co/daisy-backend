@@ -22,16 +22,26 @@ const router = Router();
 // 필수임에도 동의 체크를 하지 않고 들어온 고객에 한하여 다시 동의창을 보여주는게 이상적으로 보인다.
 
 //* 네이버로 로그인하기 라우터 ***********************
-router.get('/naver', passport.authenticate('naver', { authType: 'reprompt' }));
- 
 //? 위에서 네이버 서버 로그인이 되면, 네이버 redirect url 설정에 따라 이쪽 라우터로 오게 된다.
-router.get(
+router.post(
    '/naver/callback',
-   //? 그리고 passport 로그인 전략에 의해 naverStrategy로 가서 카카오계정 정보와 DB를 비교해서 회원가입시키거나 로그인 처리하게 한다.
-   passport.authenticate('naver', { failureRedirect: '/' }),
-   (req, res) => {
-      res.redirect('/');
+   //그리고 passport 로그인 전략에 의해 naverStrategy로 가서 카카오계정 정보와 DB를 비교해서 회원가입시키거나 로그인 처리하게 한다.
+   passport.authenticate('naver', { 
+      //로그인 실패시 get 요청할 주소.
+      failureRedirect: '/fail' 
+   }), (req, res) => {
+      //로그인 성공시 get 요청할 주소
+      res.redirect('/success');
    },
 );
+
+router.get('/fail',async(req,res)=> {
+   res.send('로그인 실패');
+});
+
+router.get('/success', async(req,res)=>{
+   res.send('로그인 성공');
+});
+
 
 export default router;

@@ -1,12 +1,24 @@
 const Sequelize = require('sequelize');
 
-module.exports = class Client extends Sequelize.Model{
+module.exports = class User extends Sequelize.Model{
     static init(sequelize){
         return super.init({
-            clientId: {
+            snsId: {
                 type: Sequelize.STRING(20),
                 allowNull: false,
             },
+            provider: {
+                type: Sequelize.STRING(20),
+                allowNull: false,
+            },
+            email: {
+                type: Sequelize.STRING(30),
+                allowNull: false,
+            },
+            nick: {
+                type: Sequelize.STRING(20),
+                allowNull: false,
+            }
 
 		}, {
             sequelize,
