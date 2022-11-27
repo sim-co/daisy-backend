@@ -4,7 +4,6 @@ import dotenv from "dotenv";
 import passport from "passport";
 import passportConfig from "./passport";
 import session from "express-session";
-import { swaggerUi, specs } from "../module/swagger"
 
 const { sequelize } = require("../models");
 
@@ -28,6 +27,15 @@ app.use(cors());
 // app.use(passport.session()); // 세션 연결
 // passportConfig(); // 이 부분 추가
 
+//스웨거 설정
+/**
+ * @swagger
+ * tags:
+ *   name: User
+ *   description: 유저 추가 수정 삭제 조회
+ */
+import { swaggerUi, specs } from "../module/swagger"
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 
 //로그인 회원가입 기능
 import client from "./route/client";
