@@ -31,7 +31,7 @@ app.use(cors());
 
 //로그인 회원가입 기능
 import client from "./route/client";
-// app.use("/client",client);
+app.use("/client",client);
 
 app.listen(port, () => {
   console.log(`http://localhost:${port}`);
