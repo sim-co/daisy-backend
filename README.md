@@ -2,7 +2,7 @@
 
 
 #### Database
-- 
+- MYSQL
 
 #### Stack
 - 

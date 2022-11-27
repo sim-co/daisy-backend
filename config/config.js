@@ -5,7 +5,7 @@ const envList  = {
   "development": {
     "username": "root",
     "password": process.env.PASSWORD,
-    "database": "Daisy",
+    "database": "daisy",
     "host": "127.0.0.1",
     "dialect": "mysql"
   },
