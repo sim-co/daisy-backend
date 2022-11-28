@@ -1,5 +1,5 @@
 import { verify } from "jsonwebtoken";
-// import Client from "../models/clients";
+import User from "../../models/User";
 import APIError from "../util/apiError";
 import asyncWrapper from "../util/asyncWrapper";
 import errors from "../util/errors";
@@ -9,9 +9,9 @@ export function verifyToken(req, res, next) {
     try {
       //위변조, 만료되지 않은경우 토큰값을 디코딩하여 저장?
       const { id } = verify(req.headers.authorization, process.env.JWT_SECRET);
-      const client = await Client.findById(id);
+      const user = await User.findById(id);
 
-      res.locals.client = client;
+      res.locals.user = user;
 
       return next();
     } catch (error) {

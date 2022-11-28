@@ -5,7 +5,7 @@ import crypto from "crypto";
 
 import asyncWrapper from "../util/asyncWrapper";
 import validation from "../middleware/validation";
-import Client from "../models/clients";
+// import Client from "../models/clients";
 import APIError from "../util/apiError";
 import errors from "../util/errors";
 import jwt from "jsonwebtoken";
