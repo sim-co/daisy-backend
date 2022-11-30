@@ -3,14 +3,13 @@ import { body, param, query } from "express-validator";
 import httpStatus, { NO_CONTENT } from "http-status";
 import crypto from "crypto";
 
+import passport from "passport";
 import asyncWrapper from "../util/asyncWrapper";
 import validation from "../middleware/validation";
-// import Client from "../models/clients";
 import APIError from "../util/apiError";
 import errors from "../util/errors";
 import jwt from "jsonwebtoken";
 import { verifyToken } from "../middleware/verifyToken";
-import passport from "passport";
 
 
 const router = Router();
@@ -29,7 +28,6 @@ const router = Router();
  *   name: Users
  *   description: 유저 추가 수정 삭제 조회
  */
-
 router.post('/naver/callback',
    //그리고 passport 로그인 전략에 의해 naverStrategy로 가서 카카오계정 정보와 DB를 비교해서 회원가입시키거나 로그인 처리하게 한다.
    passport.authenticate('naver', { 
