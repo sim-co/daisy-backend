@@ -27,17 +27,23 @@ app.use(passport.initialize());// passport 구동
 app.use(passport.session()); // 세션 연결
 passportConfig(); // 이 부분 추가
 
-//스웨거 설정
-/**
- * @swagger
- * tags:
- *   name: User
- *   description: 유저 추가 수정 삭제 조회
- */
+
 import { swaggerUi, specs } from "../module/swagger"
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 
-//로그인 회원가입 기능
+/**
+ * @path {GET} http://localhost:3000/
+ */
+app.get("/",(req,res)=> {
+  res.send("Hello World");
+})
+
+/**
+ * @swagger
+ * tags:
+ *   name: Client
+ *   description: 유저 추가 수정 삭제 조회
+ */
 import client from "./route/client";
 app.use("/client",client);
 
