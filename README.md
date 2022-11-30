@@ -12,8 +12,8 @@
 #### CI/CD
 - AWS CodeDeoploy 로 하고 싶어요....
 
-## API Endpoint
-
+## API DOCS
+http://localhost:포트번호/api-docs/
 
 ## Commands
 
