@@ -4,7 +4,9 @@
 import passport from 'passport';
 // import local from './localStrategy'; //로컬 서버로 로그인할때
 import naver from './naverStrategy'; // 네이버서버로 로그인할때
- 
+import kakao from './kakaoStrategy'; // 카카오서버로 로그인할때
+import google from './googleStrategy'; // 구글서버로 로그인할때
+
 const User = require('../../models/User');
  
 // 세션은 방문자의 요청에 따른 정보를 방문자 메모리에 저장하는 것이 아닌 
@@ -25,4 +27,7 @@ module.exports = () => {
    });
    // local();
    naver(); // 네이버 전략 등록 naverStrategy.js파일로 넘어감.
+   kakao();
+   google();
+
 };

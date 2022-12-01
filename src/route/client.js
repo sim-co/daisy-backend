@@ -25,11 +25,22 @@ const router = Router();
 /**
  * @swagger
  *
+ * /naver:
+ *  get:
+ *    summary: "네이버 간편 로그인 페이지"
+ *    description: "로그인 인증 시 Redirect URL로 보낸다."
+ *    tags: [client]
+ */
+router.get('/naver', passport.authenticate('naver'));
+
+/**
+ * @swagger
+ *
  * /naver/callback:
  *  post:
  *    summary: "네이버 간편 로그인"
  *    description: "POST 방식으로 네이버에 간편 로그인 요청을 보냄. 로그인 성공시 /success 로 리다이렉트 됩니다.(임시)"
- *    tags: [Client]
+ *    tags: [client]
  */
 router.post('/naver/callback',
    //그리고 passport 로그인 전략에 의해 naverStrategy로 가서 카카오계정 정보와 DB를 비교해서 회원가입시키거나 로그인 처리하게 한다.
@@ -41,6 +52,66 @@ router.post('/naver/callback',
       res.redirect('/success');
    },
 );
+
+/**
+ * @swagger
+ *
+ * /kakao:
+ *  get:
+ *    summary: "카카오 간편 로그인 페이지"
+ *    description: "로그인 인증 시 Redirect URL로 보낸다."
+ *    tags: [client]
+ */
+router.get('/kakao', passport.authenticate('kakao'));
+
+/**
+ * @swagger
+ *
+ * /kakao/callback:
+ *  post:
+ *    summary: "카카오 간편 로그인"
+ *    description: "POST 방식으로 카카오에 간편 로그인 요청을 보냄. 로그인 성공시 /success 로 리다이렉트 됩니다.(임시)"
+ *    tags: [client]
+ */
+router.post('/kakao/callback',
+   //그리고 passport 로그인 전략에 의해 naverStrategy로 가서 카카오계정 정보와 DB를 비교해서 회원가입시키거나 로그인 처리하게 한다.
+   passport.authenticate('kakao', { 
+      //로그인 실패시 get 요청할 주소.
+      failureRedirect: '/fail' 
+   }), (req, res) => {
+      //로그인 성공시 get 요청할 주소
+      res.redirect('/success');
+   },
+);
+
+/**
+ * @swagger
+ *
+ * /google:
+ *  get:
+ *    summary: "구글 간편 로그인 페이지"
+ *    description: "로그인 인증 시 Redirect URL로 보낸다."
+ *    tags: [client]
+ */
+router.get('/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
+
+/**
+ * @swagger
+ *
+ * /google/callback:
+ *  post:
+ *    summary: "구글 간편 로그인"
+ *    description: "POST 방식으로 카카오에 간편 로그인 요청을 보냄. 로그인 성공시 /success 로 리다이렉트 됩니다.(임시)"
+ *    tags: [client]
+ */
+router.post('/google/callback',
+   passport.authenticate('google', { 
+      failureRedirect: '/fail' 
+   }), (req, res) => {
+      res.redirect('/success');
+   },
+);
+
 
 router.get('/fail',async(req,res)=> {
    res.send('로그인 실패');
