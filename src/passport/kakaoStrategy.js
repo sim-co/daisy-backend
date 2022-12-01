@@ -21,9 +21,9 @@ module.exports = () => {
                   done(null, exUser); // 기존 가입한 유저의 정보를 담아 리턴
                } else {
                   const newUser = await User.create({
-                    email: profile.email,
-                    nick: profile.name,
-                    snsId: profile.id,
+                  //   email: profile.email,
+                    nick: profile.displayName,
+                  //   snsId: profile.id,
                     provider: 'kakao',
                   });
                   done(null, newUser); // 회원가입한 유저의 정보를 담아 리턴

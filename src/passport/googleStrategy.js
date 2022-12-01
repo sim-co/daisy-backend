@@ -21,8 +21,8 @@ module.exports = () => {
                   done(null, exUser); // 기존 가입한 유저의 정보를 담아 리턴
                } else {
                   const newUser = await User.create({
-                    email: profile?.email[0].value,
-                    nick: profile.displayName,
+                    email: profile._json.email,
+                    nick: profile._json.email,
                     snsId: profile.id,
                     provider: 'google',
                   });

@@ -42,7 +42,7 @@ router.get('/naver', passport.authenticate('naver'));
  *    description: "POST 방식으로 네이버에 간편 로그인 요청을 보냄. 로그인 성공시 /success 로 리다이렉트 됩니다.(임시)"
  *    tags: [client]
  */
-router.post('/naver/callback',
+router.get('/naver/callback',
    //그리고 passport 로그인 전략에 의해 naverStrategy로 가서 카카오계정 정보와 DB를 비교해서 회원가입시키거나 로그인 처리하게 한다.
    passport.authenticate('naver', { 
       //로그인 실패시 get 요청할 주소.
@@ -73,7 +73,7 @@ router.get('/kakao', passport.authenticate('kakao'));
  *    description: "POST 방식으로 카카오에 간편 로그인 요청을 보냄. 로그인 성공시 /success 로 리다이렉트 됩니다.(임시)"
  *    tags: [client]
  */
-router.post('/kakao/callback',
+router.get('/kakao/callback',
    //그리고 passport 로그인 전략에 의해 naverStrategy로 가서 카카오계정 정보와 DB를 비교해서 회원가입시키거나 로그인 처리하게 한다.
    passport.authenticate('kakao', { 
       //로그인 실패시 get 요청할 주소.
@@ -104,7 +104,7 @@ router.get('/google', passport.authenticate('google', { scope: ['profile', 'emai
  *    description: "POST 방식으로 카카오에 간편 로그인 요청을 보냄. 로그인 성공시 /success 로 리다이렉트 됩니다.(임시)"
  *    tags: [client]
  */
-router.post('/google/callback',
+router.get('/google/callback',
    passport.authenticate('google', { 
       failureRedirect: '/fail' 
    }), (req, res) => {

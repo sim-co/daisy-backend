@@ -28,7 +28,9 @@ module.exports = () => {
          },
          async (accessToken, refreshToken, profile, done) => {
             // 네이버 프로필 정보 출력
-            console.log('naver profile : ', profile);
+            console.log("엑세스 토큰",accessToken)
+            console.log("리프레시 토큰",refreshToken)
+            // console.log('naver profile : ', profile);
             try {
                //User DB에서 네이버로 간편 로그인한 유저가 있는지 검색.
                const exUser = await User.findOne({
@@ -41,9 +43,9 @@ module.exports = () => {
                } else {
                   // 가입되지 않는 유저면 회원가입 시키고 로그인을 시킨다
                   const newUser = await User.create({
-                     email: profile.email,
-                     nick: profile.name,
-                     snsId: profile.id,
+                     email: profile._json.email,
+                     nick: profile._json.nickname,
+                     snsId: profile._json.id,
                      provider: 'naver',
                   });
                   done(null, newUser); // 회원가입한 유저의 정보를 담아 리턴
