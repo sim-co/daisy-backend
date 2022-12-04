@@ -35,18 +35,33 @@ module.exports = () => {
                //User DB에서 네이버로 간편 로그인한 유저가 있는지 검색.
                const exUser = await User.findOne({
                   // 네이버 플랫폼에서 로그인 했고 & snsId필드에 네이버 아이디가 일치할경우
-                  where: { snsId: profile.id, provider: 'naver' },
+                  where: { snsId:  profile._json.id, provider: 'naver' },
                });
                // 이미 가입된 네이버 프로필이면 로그인 성공
                if (exUser) {
+                  console.log('이미 가입됨');
+                  await User.update({
+                     accessToken: accessToken,
+                     refreshToken: refreshToken,
+                  },{
+                     where : {
+                        email: profile._json.email,
+                        provider: 'naver'
+                     }
+                  })
                   done(null, exUser); // 기존 가입한 유저의 정보를 담아 리턴
                } else {
+                  console.log('신규 회원');
+                  console.log(accessToken);
+                  console.log(refreshToken);
                   // 가입되지 않는 유저면 회원가입 시키고 로그인을 시킨다
                   const newUser = await User.create({
                      email: profile._json.email,
                      nick: profile._json.nickname,
                      snsId: profile._json.id,
                      provider: 'naver',
+                     accessToken: accessToken,
+                     refreshToken: refreshToken,
                   });
                   done(null, newUser); // 회원가입한 유저의 정보를 담아 리턴
                }

@@ -20,8 +20,13 @@ module.exports = class User extends Sequelize.Model{
             nick: {
                 type: Sequelize.TEXT,
                 allowNull: false,
-            }
-
+            },
+            accessToken: {
+                type: Sequelize.TEXT,
+            },
+            refreshToken: {
+                type: Sequelize.TEXT,
+            },
 		}, {
             sequelize,
             timestamps: false,

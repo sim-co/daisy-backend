@@ -36,7 +36,7 @@ router.get('/naver', passport.authenticate('naver'));
 /**
  * @swagger
  *
- * /client/naver/callback:
+ * /client/naver/:
  *  post:
  *    summary: "네이버 간편 로그인"
  *    description: "POST 방식으로 네이버에 간편 로그인 요청을 보냄. 로그인 성공시 /success 로 리다이렉트 됩니다.(임시)"
@@ -49,6 +49,11 @@ router.get('/naver/callback',
       failureRedirect: '/fail' 
    }), (req, res) => {
       //로그인 성공시 get 요청할 주소
+      res.json({
+         refreshToken: req.user.refreshToken,
+         accessToken: req.user.accessToken,
+      })
+      // res.send(req.user);
       res.redirect('/success');
    },
 );
