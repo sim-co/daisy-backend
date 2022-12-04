@@ -25,7 +25,7 @@ const router = Router();
 /**
  * @swagger
  *
- * /naver:
+ * /client/naver:
  *  get:
  *    summary: "네이버 간편 로그인 페이지"
  *    description: "로그인 인증 시 Redirect URL로 보낸다."
@@ -36,7 +36,7 @@ router.get('/naver', passport.authenticate('naver'));
 /**
  * @swagger
  *
- * /naver/callback:
+ * /client/naver/callback:
  *  post:
  *    summary: "네이버 간편 로그인"
  *    description: "POST 방식으로 네이버에 간편 로그인 요청을 보냄. 로그인 성공시 /success 로 리다이렉트 됩니다.(임시)"
@@ -56,7 +56,7 @@ router.get('/naver/callback',
 /**
  * @swagger
  *
- * /kakao:
+ * /client/kakao:
  *  get:
  *    summary: "카카오 간편 로그인 페이지"
  *    description: "로그인 인증 시 Redirect URL로 보낸다."
@@ -67,7 +67,7 @@ router.get('/kakao', passport.authenticate('kakao'));
 /**
  * @swagger
  *
- * /kakao/callback:
+ * /client/kakao/callback:
  *  post:
  *    summary: "카카오 간편 로그인"
  *    description: "POST 방식으로 카카오에 간편 로그인 요청을 보냄. 로그인 성공시 /success 로 리다이렉트 됩니다.(임시)"
@@ -87,7 +87,7 @@ router.get('/kakao/callback',
 /**
  * @swagger
  *
- * /google:
+ * /client/google:
  *  get:
  *    summary: "구글 간편 로그인 페이지"
  *    description: "로그인 인증 시 Redirect URL로 보낸다."
@@ -98,7 +98,7 @@ router.get('/google', passport.authenticate('google', { scope: ['profile', 'emai
 /**
  * @swagger
  *
- * /google/callback:
+ * /client/google/callback:
  *  post:
  *    summary: "구글 간편 로그인"
  *    description: "POST 방식으로 카카오에 간편 로그인 요청을 보냄. 로그인 성공시 /success 로 리다이렉트 됩니다.(임시)"

@@ -27,9 +27,9 @@ module.exports = () => {
             callbackURL: '/client/naver/callback',
          },
          async (accessToken, refreshToken, profile, done) => {
-            // 네이버 프로필 정보 출력
-            console.log("엑세스 토큰",accessToken)
-            console.log("리프레시 토큰",refreshToken)
+            // // 네이버 프로필 정보 출력
+            // console.log("엑세스 토큰",accessToken)
+            // console.log("리프레시 토큰",refreshToken)
             // console.log('naver profile : ', profile);
             try {
                //User DB에서 네이버로 간편 로그인한 유저가 있는지 검색.
