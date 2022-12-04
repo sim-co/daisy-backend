@@ -23,10 +23,10 @@ dotenv.config();
 
 // 세션 활성화
 app.use(
-  session({ 
-    secret: '비밀코드', 
-    resave: true, 
-    saveUninitialized: false 
+  session({
+    secret: '비밀코드',
+    resave: true,
+    saveUninitialized: false
   })
 );
 app.use(express.json());
@@ -42,7 +42,7 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 /**
  * @path {GET} http://localhost:3000/
  */
-app.get("/",(req,res)=> {
+app.get("/", (req, res) => {
   res.send("Hello World");
 })
 
@@ -53,7 +53,13 @@ app.get("/",(req,res)=> {
  *   description: 유저 추가 수정 삭제 조회
  */
 import client from "./route/client";
-app.use("/client",client);
+app.use("/client", client);
+
+app.use((err, req, res, next) => {
+  const { statusCode, errorCode, errorMsg } = err
+  res.status(statusCode)
+  res.json(err)
+});
 
 app.listen(port, () => {
   console.log(`http://localhost:${port}`);

@@ -16,7 +16,7 @@ import User from '../../models/User';
 
 // const { Strategy: NaverStrategy, Profile: NaverProfile } = require('passport-naver-v2');
 const NaverStrategy = require('passport-naver').Strategy;
- 
+
 module.exports = () => {
    passport.use(
       new NaverStrategy( // Naver 전략을 세우기
@@ -35,21 +35,22 @@ module.exports = () => {
                //User DB에서 네이버로 간편 로그인한 유저가 있는지 검색.
                const exUser = await User.findOne({
                   // 네이버 플랫폼에서 로그인 했고 & snsId필드에 네이버 아이디가 일치할경우
-                  where: { snsId:  profile._json.id, provider: 'naver' },
+                  where: { snsId: profile._json.id, provider: 'naver' },
                });
                // 이미 가입된 네이버 프로필이면 로그인 성공
                if (exUser) {
-                  console.log('이미 가입됨');
                   await User.update({
                      accessToken: accessToken,
                      refreshToken: refreshToken,
-                  },{
-                     where : {
+                  }, {
+                     where: {
                         email: profile._json.email,
                         provider: 'naver'
                      }
                   })
-                  done(null, exUser); // 기존 가입한 유저의 정보를 담아 리턴
+
+                  done(null, exUser)
+                  //done(null, exUser); // 기존 가입한 유저의 정보를 담아 리턴
                } else {
                   console.log('신규 회원');
                   console.log(accessToken);
@@ -63,9 +64,10 @@ module.exports = () => {
                      accessToken: accessToken,
                      refreshToken: refreshToken,
                   });
-                  done(null, newUser); // 회원가입한 유저의 정보를 담아 리턴
+                  done(null, newUser)
+                  //done(null, newUser); // 회원가입한 유저의 정보를 담아 리턴
                }
-            //로그인 에러 발생시 api에러 발생.
+               //로그인 에러 발생시 api에러 발생.
             } catch (error) {
                console.error(error);
                done(error);
@@ -74,6 +76,5 @@ module.exports = () => {
       ),
    );
 };
- 
 
- 
+
