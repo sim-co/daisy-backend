@@ -1,12 +1,12 @@
-const { Sequelize } = require("sequelize");
-const User = require("./User");
+import Sequelize  from "sequelize";
+import User from "./User";
+import configs from "../config/config.js"
 
 const env = process.env.NODE_ENV || "development";
-const config = require("../config/config.js")[env];
+const config = configs[env];
+const db = {sequelize: undefined};
 
-const db = {};
-
-const sequelize = new Sequelize( //config의 db정보와 연결
+export const sequelize = new Sequelize( //config의 db정보와 연결
   config.database,
   config.username,
   config.password,
@@ -20,5 +20,3 @@ db.User = User;
 User.init(sequelize);  
 
 User.associate(db); 
-
-module.exports = db;

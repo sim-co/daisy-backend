@@ -14,10 +14,10 @@
 import passport from 'passport';
 import User from '../../models/User';
 
-// const { Strategy: NaverStrategy, Profile: NaverProfile } = require('passport-naver-v2');
-const NaverStrategy = require('passport-naver').Strategy;
- 
-module.exports = () => {
+// const NaverStrategy = require('passport-naver').Strategy;
+import { Strategy as NaverStrategy } from 'passport-naver';
+
+export default() => {
    passport.use(
       new NaverStrategy( // Naver 전략을 세우기
          {

@@ -1,27 +1,31 @@
-const dotenv = require("dotenv");
+import dotenv from "dotenv";
+
 dotenv.config();
 
 const envList  = {
   "development": {
     "username": "root",
-    "password": process.env.PASSWORD,
+    "password": "root",
     "database": "daisy",
-    "host": "127.0.0.1",
-    "dialect": "mysql"
+    "host": "129.154.198.23",
+    "port" : 49302,
+    "dialect": "postgres"
   },
   "test": {
     "username": "root",
-    "password": null,
+    "password": "root",
     "database": "database_test",
-    "host": "127.0.0.1",
-    "dialect": "mysql"
+    "host": "129.154.198.23",
+    "port" : 49302,
+    "dialect": "postgres"
   },
   "production": {
     "username": "root",
-    "password": null,
+    "password": "root",
     "database": "database_production",
-    "host": "127.0.0.1",
-    "dialect": "mysql"
+    "host": "129.154.198.23",
+    "port" : 49302,
+    "dialect": "postgres"
   }
 }
-module.exports = envList;
+export default  envList ;

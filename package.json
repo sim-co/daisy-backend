@@ -4,9 +4,16 @@
   "main": "index.js",
   "license": "MIT",
   "dependencies": {
+    "aws-serverless-express": "^3.4.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "errors": "^0.3.0",
     "express": "^4.18.2",
     "express-session": "^1.17.3",
     "express-validator": "^6.14.2",
+    "http-error": "^0.0.6",
+    "http-status": "^1.5.3",
+    "jsonwebtoken": "^8.5.1",
     "mysql": "^2.18.1",
     "mysql2": "^2.3.3",
     "passport": "^0.6.0",
@@ -15,25 +22,31 @@
     "passport-local": "^1.0.0",
     "passport-naver": "^1.0.6",
     "passport-naver-v2": "^2.0.8",
+    "pg": "^8.8.0",
+    "pg-hstore": "^2.3.4",
     "sequelize": "^6.25.7",
-    "sequelize-cli": "^6.5.2"
+    "sequelize-cli": "^6.5.2",
+    "swagger-jsdoc": "^6.2.5",
+    "swagger-ui-express": "^4.6.0"
   },
   "devDependencies": {
     "@babel/core": "^7.20.2",
     "@babel/node": "^7.20.2",
     "@babel/preset-env": "^7.20.2",
-    "cors": "^2.8.5",
-    "dotenv": "^16.0.3",
-    "errors": "^0.3.0",
-    "http-error": "^0.0.6",
-    "http-status": "^1.5.3",
-    "jsonwebtoken": "^8.5.1",
+    "@webpack-cli/generators": "^3.0.1",
+    "babel-loader": "^9.1.0",
     "nodemon": "^2.0.20",
-    "swagger-jsdoc": "^6.2.5",
-    "swagger-ui-express": "^4.6.0",
-    "validation": "^0.0.1"
+    "serverless": "^3.25.1",
+    "serverless-offline": "^12.0.3",
+    "serverless-webpack": "^5.11.0",
+    "validation": "^0.0.1",
+    "webpack": "^5.75.0",
+    "webpack-cli": "^5.0.1",
+    "webpack-node-externals": "^3.0.0"
   },
   "scripts": {
-    "start": "nodemon src/app.js --exec babel-node"
+    "start": "nodemon src/index.js --exec babel-node",
+    "test": "serverless offline start",
+    "deploy": "serverless deploy"
   }
 }

@@ -2,7 +2,7 @@ import passport from 'passport';
 import User from '../../models/User';
 import { Strategy as googleStrategy } from "passport-google-oauth20";
  
-module.exports = () => {
+export default() => {
    passport.use(
       new googleStrategy(
          {

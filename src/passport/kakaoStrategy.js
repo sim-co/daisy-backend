@@ -3,7 +3,7 @@ import User from '../../models/User';
 import { Strategy as kakaoStrategy } from "passport-kakao";
 // const kakaoStrategy = require('passport-kakao').Strategy;
 
-module.exports = () => {
+export default() => {
    passport.use(
       new kakaoStrategy(
          {

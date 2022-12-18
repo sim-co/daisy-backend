@@ -1,17 +1,21 @@
 import express from "express";
+import pg from "pg";
+import mysql2 from "mysql2";
 import cors from "cors";
 import dotenv from "dotenv";
 import passport from "passport";
 import passportConfig from "./passport";
 import session from "express-session";
+import swaggerUi from "swagger-ui-express";
+import { sequelize } from  "../models";
 
-const { sequelize } = require("../models");
+mysql2.format("use system");
 
 const app = express();
 const port = 3000;
 
 sequelize
-  .sync({ force: true })
+  .sync({ force: false })
   .then(() => {
     console.log("데이터베이스 연결 성공");
   })
@@ -36,7 +40,7 @@ app.use(passport.session()); // 세션 연결
 passportConfig(); // 이 부분 추가 (패스포트를 설정)
 
 
-import { swaggerUi, specs } from "../module/swagger"
+import {  specs } from "../module/swagger"
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 
 /**
@@ -55,8 +59,5 @@ app.get("/",(req,res)=> {
 import client from "./route/client";
 app.use("/client",client);
 
-app.listen(port, () => {
-  console.log(`http://localhost:${port}`);
-});
 
 export default app;

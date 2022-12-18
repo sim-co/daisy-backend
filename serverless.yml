@@ -1,0 +1,27 @@
+service: serverless-express # 서비스 명
+
+plugins:
+  - serverless-webpack # serverless-webpack이 먼저 와야 합니다.
+  - serverless-offline
+
+custom:
+  webpack: # serverless-webpack 관련 설정
+    # webpackConfig: 'webpack.config.js'
+    includeModules: true
+    packager: 'yarn' # npm을 사용한다면 npm으로 설정해주세요.
+
+provider:
+  name: aws
+  runtime: nodejs16.x
+  stage: dev
+  region: ap-northeast-2 # 다른 리전을 사용 중이라면 바꾸어주세요.
+
+package:
+  include: .env
+
+functions:
+  app:
+    handler: src/handler.handler
+    events:
+      - http: ANY /
+      - http: 'ANY {proxy+}'

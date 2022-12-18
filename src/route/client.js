@@ -53,8 +53,6 @@ router.get('/naver/callback',
          refreshToken: req.user.refreshToken,
          accessToken: req.user.accessToken,
       })
-      // res.send(req.user);
-      res.redirect('/success');
    },
 );
 
