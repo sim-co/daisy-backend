@@ -15,12 +15,14 @@ import User from '../../models/User';
 export default() => {
 // 로그인 성공시 user 객체를 전달받아 세션(정확히는 req.session.passport.user에 저장함.
   passport.serializeUser((user, done) => { //Startegy 성공 시 호출됨.
-      done(null, user.id); // 여기의 user가 deserializeUser의 첫 번째 매개변수로 이동
+      console.log(user.snsId);
+      done(null, user.snsId); // 여기의 user가 deserializeUser의 첫 번째 매개변수로 이동
    });
 
 //실제 서버로 들어오는 요청마다 세션 정보(serializeUser에서 저장됨)를 실제 DB의 데이터와 비교합니다.
 //해당하는 유저 정보가 있으면 done의 두 번째 인자를 req.user에 저장하고, 요청을 처리할 때 유저의 정보를 req.user를 통해서 넘겨줍니다. 
   passport.deserializeUser((id, done) => {
+      console.log(id)
       User.findOne({ where: { id } }) //유저 DB에 유저의 아이디가 존재하는지 검색
          .then(user => done(null, user))
          .catch(err => done(err));

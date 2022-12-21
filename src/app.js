@@ -57,7 +57,13 @@ app.get("/",(req,res)=> {
  *   description: 유저 추가 수정 삭제 조회
  */
 import client from "./route/client";
-app.use("/client",client);
+app.use("/client", client);
+
+app.use((err, req, res, next) => {
+  const { statusCode, errorCode, errorMsg } = err
+  res.status(statusCode)
+  res.json(err)
+});
 
 
 export default app;
