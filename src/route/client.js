@@ -11,6 +11,8 @@ import errors from "../util/errors";
 import jwt from "jsonwebtoken";
 import { verifyToken } from "../middleware/verifyToken";
 
+import { generateAccessToken, generateRefreshToken } from "../util/jwt"
+
 
 const router = Router();
 // 네이버는 필수정보 항목에 체크를 하지 않아도 로그인이 된다. 필수 항목 또한 사용자가 선택할 수 있다는데, 그럼 선택이랑 다를게 없어 보이는데 왜 그랬는지 알 수 없다. 참고
@@ -44,17 +46,17 @@ router.get('/naver', passport.authenticate('naver'));
  */
 router.get('/naver/callback',
    //그리고 passport 로그인 전략에 의해 naverStrategy로 가서 카카오계정 정보와 DB를 비교해서 회원가입시키거나 로그인 처리하게 한다.
-   passport.authenticate('naver', { 
+   passport.authenticate('naver', {
       //로그인 실패시 get 요청할 주소.
-      failureRedirect: '/fail' 
+      failureRedirect: '/fail'
    }), (req, res) => {
-      //로그인 성공시 get 요청할 주소
+      const accessToken = generateAccessToken(req.user.id);
+      const refreshToken = generateRefreshToken(req.user.id)
+
       res.json({
-         refreshToken: req.user.refreshToken,
-         accessToken: req.user.accessToken,
+         accessToken,
+         refreshToken,
       })
-      // res.send(req.user);
-      res.redirect('/success');
    },
 );
 
@@ -80,9 +82,9 @@ router.get('/kakao', passport.authenticate('kakao'));
  */
 router.get('/kakao/callback',
    //그리고 passport 로그인 전략에 의해 naverStrategy로 가서 카카오계정 정보와 DB를 비교해서 회원가입시키거나 로그인 처리하게 한다.
-   passport.authenticate('kakao', { 
+   passport.authenticate('kakao', {
       //로그인 실패시 get 요청할 주소.
-      failureRedirect: '/fail' 
+      failureRedirect: '/fail'
    }), (req, res) => {
       //로그인 성공시 get 요청할 주소
       res.redirect('/success');
@@ -110,21 +112,26 @@ router.get('/google', passport.authenticate('google', { scope: ['profile', 'emai
  *    tags: [client]
  */
 router.get('/google/callback',
-   passport.authenticate('google', { 
-      failureRedirect: '/fail' 
+   passport.authenticate('google', {
+      failureRedirect: '/fail'
    }), (req, res) => {
       res.redirect('/success');
    },
 );
 
 
-router.get('/fail',async(req,res)=> {
+router.get('/fail', async (req, res) => {
    res.send('로그인 실패');
 });
 
-router.get('/success', async(req,res)=>{
+router.get('/success', async (req, res) => {
    res.send('로그인 성공');
 });
 
+router.get('/test', verifyToken, async (req, res) => {
+   res.json({
+      id: req.app.user.id
+   })
+});
 
 export default router;
