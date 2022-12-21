@@ -63,6 +63,7 @@ export default() => {
                      accessToken: accessToken,
                      refreshToken: refreshToken,
                   });
+                  console.log('신규 회원 등록 완료');
                   done(null, newUser); // 회원가입한 유저의 정보를 담아 리턴
                }
             //로그인 에러 발생시 api에러 발생.

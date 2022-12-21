@@ -47,6 +47,7 @@
   "scripts": {
     "start": "nodemon src/index.js --exec babel-node",
     "test": "serverless offline start",
+    "babel": "babel-node test.js",
     "deploy": "serverless deploy"
   }
 }

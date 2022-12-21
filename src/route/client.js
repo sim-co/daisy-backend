@@ -2,7 +2,7 @@ import { Router } from "express";
 import { body, param, query } from "express-validator";
 import httpStatus, { NO_CONTENT } from "http-status";
 import crypto from "crypto";
-
+import { generateAccessToken, generateRefreshToken } from "../util/jwt"
 import passport from "passport";
 import asyncWrapper from "../util/asyncWrapper";
 import validation from "../middleware/validation";
@@ -39,19 +39,21 @@ router.get('/naver', passport.authenticate('naver'));
  * /client/naver/:
  *  post:
  *    summary: "네이버 간편 로그인"
- *    description: "POST 방식으로 네이버에 간편 로그인 요청을 보냄. 로그인 성공시 /success 로 리다이렉트 됩니다.(임시)"
+ *    description: "POST 방식으로 네이버에 간편 로그인 요청을 보냄. 로그인 성공시 엑세스 토큰과 리프레시 토큰을 Json 형태로 응답합니다."
  *    tags: [client]
  */
 router.get('/naver/callback',
    //그리고 passport 로그인 전략에 의해 naverStrategy로 가서 카카오계정 정보와 DB를 비교해서 회원가입시키거나 로그인 처리하게 한다.
    passport.authenticate('naver', { 
       //로그인 실패시 get 요청할 주소.
-      failureRedirect: '/fail' 
+      failureRedirect: '/fail'
    }), (req, res) => {
-      //로그인 성공시 get 요청할 주소
+      console.log(req.user.dataValues.snsId)
+      const accessToken = generateAccessToken(req.user.dataValues.snsId);
+      const refreshToken = generateRefreshToken(req.user.dataValues.snsId);
       res.json({
-         refreshToken: req.user.refreshToken,
-         accessToken: req.user.accessToken,
+         accessToken,
+         refreshToken,
       })
    },
 );
@@ -73,7 +75,7 @@ router.get('/kakao', passport.authenticate('kakao'));
  * /client/kakao/callback:
  *  post:
  *    summary: "카카오 간편 로그인"
- *    description: "POST 방식으로 카카오에 간편 로그인 요청을 보냄. 로그인 성공시 /success 로 리다이렉트 됩니다.(임시)"
+ *    description: "POST 방식으로 네이버에 간편 로그인 요청을 보냄. 로그인 성공시 엑세스 토큰과 리프레시 토큰을 Json 형태로 응답합니다."
  *    tags: [client]
  */
 router.get('/kakao/callback',
@@ -82,8 +84,13 @@ router.get('/kakao/callback',
       //로그인 실패시 get 요청할 주소.
       failureRedirect: '/fail' 
    }), (req, res) => {
-      //로그인 성공시 get 요청할 주소
-      res.redirect('/success');
+      console.log(req.user.dataValues.snsId)
+      const accessToken = generateAccessToken(req.user.dataValues.snsId);
+      const refreshToken = generateRefreshToken(req.user.dataValues.snsId);
+      res.json({
+         accessToken,
+         refreshToken,
+      })
    },
 );
 
@@ -104,14 +111,20 @@ router.get('/google', passport.authenticate('google', { scope: ['profile', 'emai
  * /client/google/callback:
  *  post:
  *    summary: "구글 간편 로그인"
- *    description: "POST 방식으로 카카오에 간편 로그인 요청을 보냄. 로그인 성공시 /success 로 리다이렉트 됩니다.(임시)"
+ *    description: "POST 방식으로 네이버에 간편 로그인 요청을 보냄. 로그인 성공시 엑세스 토큰과 리프레시 토큰을 Json 형태로 응답합니다."
  *    tags: [client]
  */
 router.get('/google/callback',
    passport.authenticate('google', { 
       failureRedirect: '/fail' 
    }), (req, res) => {
-      res.redirect('/success');
+      console.log(req.user.dataValues.snsId)
+      const accessToken = generateAccessToken(req.user.dataValues.snsId);
+      const refreshToken = generateRefreshToken(req.user.dataValues.snsId);
+      res.json({
+         accessToken,
+         refreshToken,
+      })
    },
 );
 
@@ -124,5 +137,21 @@ router.get('/success', async(req,res)=>{
    res.send('로그인 성공');
 });
 
+
+/**
+ * @swagger
+ *
+ * /client/test:
+ *  get:
+ *    summary: "테스트"
+ *    description: "요청시 토큰 값을 Bearer Auth에 첨부하여 요청해야 합니다. 검증 성공 시 해당 유저의 정보가 json 형태로 리턴됩니다."
+ *    tags: [client]
+ */
+router.get('/test', verifyToken, async (req, res) => {
+   res.send(res.app.user);
+   // res.json({
+   //    id: res.app
+   // })
+});
 
 export default router;
