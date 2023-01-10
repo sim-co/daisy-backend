@@ -4,22 +4,15 @@ import dotenv from "dotenv";
 import passport from "passport";
 import passportConfig from "./passport";
 import session from "express-session";
-
-const { sequelize } = require("../models");
-
+import connect from "../schemas";
+ 
 const app = express();
 const port = 3000;
 
-sequelize
-  .sync({ force: true })
-  .then(() => {
-    console.log("데이터베이스 연결 성공");
-  })
-  .catch((err) => {
-    console.log(err);
-  });
-
 dotenv.config();
+
+// 몽고 디비 연결
+connect(); 
 
 // 세션 활성화
 app.use(
@@ -36,8 +29,8 @@ app.use(passport.session()); // 세션 연결
 passportConfig(); // 이 부분 추가 (패스포트를 설정)
 
 
-import { swaggerUi, specs } from "../module/swagger"
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
+import { specs } from "../module/swagger"
+// app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 
 /**
  * @path {GET} http://localhost:3000/

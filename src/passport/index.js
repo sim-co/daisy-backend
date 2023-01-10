@@ -7,12 +7,12 @@ import naver from './naverStrategy'; // 네이버서버로 로그인할때
 import kakao from './kakaoStrategy'; // 카카오서버로 로그인할때
 import google from './googleStrategy'; // 구글서버로 로그인할때
 
-const User = require('../../models/User');
+import User from '../../schemas/users';
 
 // 세션은 방문자의 요청에 따른 정보를 방문자 메모리에 저장하는 것이 아닌 
 //웹 서버가 세션 아이디 파일을 만들어 서비스가 돌아가고 있는 서버에 저장을 하는것을 말한다.
 
-module.exports = () => {
+export default() => {
    // 로그인 성공시 user 객체를 전달받아 세션(정확히는 req.session.passport.user에 저장함.
    passport.serializeUser((user, done) => { //Startegy 성공 시 호출됨.
       done(null, user.id); // 여기의 user가 deserializeUser의 첫 번째 매개변수로 이동

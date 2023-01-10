@@ -12,12 +12,12 @@
 //이것은 서버 에러도 아니고, 사용자가 임의로 만드는 에러이기 때문에, 직접 에러 메시지도 써주는 겁니다.
 
 import passport from 'passport';
-import User from '../../models/User';
+import User from '../../schemas/users';
 
 // const { Strategy: NaverStrategy, Profile: NaverProfile } = require('passport-naver-v2');
-const NaverStrategy = require('passport-naver').Strategy;
+import { Strategy as NaverStrategy } from "passport-naver"
 
-module.exports = () => {
+export default() => {
    passport.use(
       new NaverStrategy( // Naver 전략을 세우기
          {

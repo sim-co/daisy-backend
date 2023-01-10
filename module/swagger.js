@@ -1,6 +1,4 @@
-import swaggerUi from "swagger-ui-express";
 import swaggereJsdoc from "swagger-jsdoc";
-
 
 const options = {
     swaggerDefinition: {
@@ -18,9 +16,4 @@ const options = {
     ]
 };
 
-const specs = swaggereJsdoc(options);
-
-module.exports = {
-    swaggerUi,
-    specs
-};
+export const specs = swaggereJsdoc(options);

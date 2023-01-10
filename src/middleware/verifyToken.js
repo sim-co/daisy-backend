@@ -1,5 +1,5 @@
 import { JsonWebTokenError, verify } from "jsonwebtoken";
-import User from "../../models/User";
+import User from '../../schemas/users';
 import APIError from "../util/apiError";
 import asyncWrapper from "../util/asyncWrapper";
 import errors from "../util/errors";
