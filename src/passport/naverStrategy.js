@@ -39,15 +39,12 @@ export default() => {
                });
                // 이미 가입된 네이버 프로필이면 로그인 성공
                if (exUser) {
-                  await User.update({
-                     accessToken: accessToken,
-                     refreshToken: refreshToken,
-                  }, {
-                     where: {
-                        email: profile._json.email,
-                        provider: 'naver'
-                     }
-                  })
+                  //토큰 올리는 부분 
+                  await User.updateOne({
+                     email: profile._json.email,
+                     provider: 'naver'
+                  }, { $set: {accessToken: accessToken,
+                              refreshToken: refreshToken, }})
 
                   done(null, exUser)
                   //done(null, exUser); // 기존 가입한 유저의 정보를 담아 리턴
