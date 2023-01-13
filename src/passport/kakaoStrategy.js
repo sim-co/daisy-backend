@@ -14,17 +14,17 @@ export default() => {
          async (accessToken, refreshToken, profile, done) => {
             console.log('kakao profile : ', profile);
             try {
-               const exUser = await User.findOne({
-                  where: { snsId: profile.id, provider: 'kakao' },
-               });
+               const exUser = await User.findOne({ snsId: profile.id, provider: 'kakao' });
                if (exUser) {
                   done(null, exUser); // 기존 가입한 유저의 정보를 담아 리턴
                } else {
                   const newUser = await User.create({
                   //   email: profile.email,
                     nick: profile.displayName,
-                  //   snsId: profile.id,
+                    snsId: profile.id,
                     provider: 'kakao',
+                    accessToken : accessToken,
+                    refreshToken : refreshToken
                   });
                   done(null, newUser); // 회원가입한 유저의 정보를 담아 리턴
                }

@@ -10,7 +10,7 @@ const userSchema = new Schema({
   },
   nick: {
     type: String,
-    required: true, // null 여부
+    required: false, // null 여부
     unique: true, // 유니크 여부
   },
   snsId: {
@@ -30,7 +30,7 @@ const userSchema = new Schema({
   },
   refreshToken: {
     type: String,
-    required: true, // null 여부
+    required: false, // null 여부
     unique: false, // 유니크 여부
   },
 });

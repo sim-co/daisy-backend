@@ -62,7 +62,7 @@ export default() => {
                      refreshToken: refreshToken,
                   });
                   done(null, newUser)
-                  //done(null, newUser); // 회원가입한 유저의 정보를 담아 리턴
+                  // done(null, newUser); // 회원가입한 유저의 정보를 담아 리턴
                }
                //로그인 에러 발생시 api에러 발생.
             } catch (error) {

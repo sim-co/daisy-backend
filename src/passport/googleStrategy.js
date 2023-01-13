@@ -12,11 +12,9 @@ export default() => {
             callbackURL: '/client/google/callback',
          },
          async (accessToken, refreshToken, profile, done) => {
-            console.log('google profile : ', profile);
+            // console.log('google profile : ', profile); // 프로필 출력
             try {
-               const exUser = await User.findOne({
-                  where: { snsId: profile.id, provider: 'google' },
-               });
+               const exUser = await User.findOne({ snsId: profile.id, provider: 'google' });
                if (exUser) {
                   done(null, exUser); // 기존 가입한 유저의 정보를 담아 리턴
                } else {
@@ -25,6 +23,8 @@ export default() => {
                     nick: profile._json.email,
                     snsId: profile.id,
                     provider: 'google',
+                    accessToken: accessToken,
+                    refreshToken: refreshToken,
                   });
                   done(null, newUser); // 회원가입한 유저의 정보를 담아 리턴
                }
