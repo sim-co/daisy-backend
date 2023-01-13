@@ -33,10 +33,10 @@ export default() => {
             // console.log('naver profile : ', profile);
             try {
                //User DB에서 네이버로 간편 로그인한 유저가 있는지 검색.
-               const exUser = await User.findOne({
+               const exUser = await User.findOne(
                   // 네이버 플랫폼에서 로그인 했고 & snsId필드에 네이버 아이디가 일치할경우
-                  where: { snsId: profile._json.id, provider: 'naver' },
-               });
+                  { snsId: profile._json.id, provider: 'naver' },
+               );
                // 이미 가입된 네이버 프로필이면 로그인 성공
                if (exUser) {
                   //토큰 올리는 부분 

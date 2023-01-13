@@ -10,13 +10,13 @@ const userSchema = new Schema({
   },
   nick: {
     type: String,
-    required: false, // null 여부
+    required: true, // null 여부
     unique: true, // 유니크 여부
   },
   snsId: {
     type: String,
-    required: false, // null 여부
-    unique: true, // 유니크 여부
+    required: true, // null 여부
+    unique: false, // 유니크 여부
   },
   provider: {
     type: String,
