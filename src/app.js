@@ -18,8 +18,8 @@ connect();
 app.use(
   session({
     secret: '비밀코드',
-    resave: true,
-    saveUninitialized: false
+    resave: true, // 세션이 수정되었을 때 자동으로 저장할지 여부
+    saveUninitialized: false // 초기화되지 않은 세션을 저장할지 여부
   })
 );
 app.use(express.json());

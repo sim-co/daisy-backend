@@ -12,7 +12,6 @@ export default() => {
             callbackURL: '/client/kakao/callback',
          },
          async (accessToken, refreshToken, profile, done) => {
-            console.log('kakao profile : ', profile);
             try {
                const exUser = await User.findOne({ snsId: profile.id, provider: 'kakao' });
                if (exUser) {
@@ -23,10 +22,13 @@ export default() => {
                     nick: profile.displayName,
                     snsId: profile.id,
                     provider: 'kakao',
-                    accessToken : accessToken,
-                    refreshToken : refreshToken
                   });
-                  done(null, newUser); // 회원가입한 유저의 정보를 담아 리턴
+                  const tokenNewUser = {
+                     user : newUser,
+                     accessToken : accessToken
+                  }
+                  done(null, tokenNewUser); // 회원가입한 유저의 정보를 담아 리턴
+                  
                }
             //로그인 에러 발생시 api에러 발생.
             } catch (error) {

@@ -6,12 +6,12 @@ const userSchema = new Schema({
   email: {
     type: String,
     required: false, // null 여부
-    unique: true, // 유니크 여부
+    unique: false, // 유니크 여부
   },
   nick: {
     type: String,
     required: true, // null 여부
-    unique: true, // 유니크 여부
+    unique: false, // 유니크 여부
   },
   snsId: {
     type: String,
