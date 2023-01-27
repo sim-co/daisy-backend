@@ -51,12 +51,14 @@ router.get('/naver/callback',
       failureRedirect: '/fail'
    }), (req, res) => {
       const accessToken = generateAccessToken(req.user.id);
-      const refreshToken = generateRefreshToken(req.user.id)
+      const refreshToken = generateRefreshToken(req.user.id);
 
+      //여기에 리다이렉트하면서 토큰 ₩
       res.json({
          accessToken,
          refreshToken,
       })
+      
    },
 );
 
@@ -141,10 +143,6 @@ router.get('/test', verifyToken, async (req, res) => {
    res.json({
       id: req.app.user.id
    })
-});
-
-router.get('/adddata', async (req, res) => {
-   console.log(req.user);
 });
 
 router.post('/adddata', async (req, res) => {
