@@ -20,8 +20,6 @@ export default() => {
    //실제 서버로 들어오는 요청마다 세션 정보(serializeUser에서 저장됨)를 실제 DB의 데이터와 비교합니다.
    //해당하는 유저 정보가 있으면 done의 두 번째 인자를 req.user에 저장하고, 요청을 처리할 때 유저의 정보를 req.user를 통해서 넘겨줍니다. 
    passport.deserializeUser((id, done) => {
-      console.log(id);
-      console.log("실행");
       User.findById(id) //유저 DB에 유저의 아이디가 존재하는지 검색 
          .then(user => done(null, user))
          .catch(err => done(err));

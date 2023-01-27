@@ -23,8 +23,6 @@ export default() => {
                     nick: profile._json.email,
                     snsId: profile.id,
                     provider: 'google',
-                    accessToken: accessToken,
-                    refreshToken: refreshToken,
                   });
                   done(null, newUser); // 회원가입한 유저의 정보를 담아 리턴
                }
