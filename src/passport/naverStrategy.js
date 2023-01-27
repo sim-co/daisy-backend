@@ -55,7 +55,7 @@ export default() => {
                   // 가입되지 않는 유저면 회원가입 시키고 로그인을 시킨다
                   const newUser = await User.create({
                      email: profile._json.email,
-                     nick: profile._json.nickname,
+                     snsNickName: profile._json.nickname,
                      snsId: profile._json.id,
                      provider: 'naver',
                      accessToken: accessToken,

@@ -9,7 +9,7 @@ import google from './googleStrategy'; // 구글서버로 로그인할때
 import User from '../../schemas/users';
 
 // 세션은 방문자의 요청에 따른 정보를 방문자 메모리에 저장하는 것이 아닌 
-//웹 서버가 세션 아이디 파일을 만들어 서비스가 돌아가고 있는 서버에 저장을 하는것을 말한다.
+// 웹 서버가 세션 아이디 파일을 만들어 서비스가 돌아가고 있는 서버에 저장을 하는것을 말한다.
 
 export default() => {
    // 로그인 성공시 user 객체를 전달받아 세션(정확히는 req.session.passport.user에 저장함.
@@ -20,7 +20,9 @@ export default() => {
    //실제 서버로 들어오는 요청마다 세션 정보(serializeUser에서 저장됨)를 실제 DB의 데이터와 비교합니다.
    //해당하는 유저 정보가 있으면 done의 두 번째 인자를 req.user에 저장하고, 요청을 처리할 때 유저의 정보를 req.user를 통해서 넘겨줍니다. 
    passport.deserializeUser((id, done) => {
-      User.findById(id) //유저 DB에 유저의 아이디가 존재하는지 검색
+      console.log(id);
+      console.log("실행");
+      User.findById(id) //유저 DB에 유저의 아이디가 존재하는지 검색 
          .then(user => done(null, user))
          .catch(err => done(err));
    });

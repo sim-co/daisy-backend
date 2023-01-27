@@ -1,18 +1,18 @@
 import { Router } from "express";
+import passport from "passport";
+import { verifyToken } from "../middleware/verifyToken";
+import { generateAccessToken, generateRefreshToken } from "../util/jwt"
+import User from '../../schemas/users';
+
+
 import { body, param, query } from "express-validator";
 import httpStatus, { NO_CONTENT } from "http-status";
-import crypto from "crypto";
-
-import passport from "passport";
 import asyncWrapper from "../util/asyncWrapper";
 import validation from "../middleware/validation";
 import APIError from "../util/apiError";
 import errors from "../util/errors";
 import jwt from "jsonwebtoken";
-import { verifyToken } from "../middleware/verifyToken";
-
-import { generateAccessToken, generateRefreshToken } from "../util/jwt"
-
+import crypto from "crypto";
 
 const router = Router();
 // 네이버는 필수정보 항목에 체크를 하지 않아도 로그인이 된다. 필수 항목 또한 사용자가 선택할 수 있다는데, 그럼 선택이랑 다를게 없어 보이는데 왜 그랬는지 알 수 없다. 참고
@@ -86,8 +86,17 @@ router.get('/kakao/callback',
       //로그인 실패시 get 요청할 주소.
       failureRedirect: '/fail'
    }), (req, res) => {
-      //로그인 성공시 get 요청할 주소
-      res.redirect('/success');
+      // 만약 추가 데이터를 적지 않았다면 (신규 사용자라면)
+      if (req.user.loginLog == false) {
+         // console.log(req.user.id);
+         // console.log(req.session.passport.user);
+
+         res.redirect("/client/adddata");
+      }
+      else if (req.user.loginLog == true) {
+         //로그인 성공시 get 요청할 주소 (메인화면으로 보낸다.)
+         res.redirect('/success');
+      }
    },
 );
 
@@ -132,6 +141,27 @@ router.get('/test', verifyToken, async (req, res) => {
    res.json({
       id: req.app.user.id
    })
+});
+
+router.get('/adddata', async (req, res) => {
+   console.log(req.user);
+});
+
+router.post('/adddata', async (req, res) => {
+   console.log(req.user)
+   const userId = req.user.id;
+   const { nickName, gender, local, birthDay } = req.body;
+   try {
+      await User.findByIdAndUpdate(userId, {
+         nickName: nickName,
+         gender : gender,
+         local : local,
+         birthDay: birthDay,
+         loginLog : true
+      });
+   } catch(error) {
+      console.error(error)
+   }
 });
 
 export default router;
