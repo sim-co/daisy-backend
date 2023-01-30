@@ -3,7 +3,7 @@ import passport from "passport";
 import { verifyToken } from "../middleware/verifyToken";
 import { generateAccessToken, generateRefreshToken } from "../util/jwt"
 import User from '../../schemas/users';
-
+import querystring from "querystring";
 
 import { body, param, query } from "express-validator";
 import httpStatus, { NO_CONTENT } from "http-status";
@@ -92,8 +92,11 @@ router.get('/kakao/callback',
       if (req.user.loginLog == false) {
          // console.log(req.user.id);
          // console.log(req.session.passport.user);
-
-         res.redirect("/client/add-data");
+         const query = querystring.stringify({
+            "access" : accessToken,
+            "refresh" : refreshToken
+         });
+         res.redirect("/client/add-data?" + query);
       }
       else if (req.user.loginLog == true) {
          //로그인 성공시 get 요청할 주소 (메인화면으로 보낸다.)
