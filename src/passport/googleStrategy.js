@@ -12,7 +12,6 @@ export default() => {
             callbackURL: '/client/google/callback',
          },
          async (accessToken, refreshToken, profile, done) => {
-            // console.log('google profile : ', profile); // 프로필 출력
             try {
                const exUser = await User.findOne({ snsId: profile.id, provider: 'google' });
                if (exUser) {
