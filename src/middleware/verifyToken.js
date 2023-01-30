@@ -21,7 +21,8 @@ export function verifyToken(req, res, next) {
       const { userid } = verify(token, process.env.JWT_SECRET);
       console.log(userid)
 
-      const user = (await User.findByPk(userid)).dataValues;
+      // const user = (await User.findByPk(userid)).dataValues;
+      const user = await User.findById(userid);
       console.log(user)
 
       res.app.user = user;

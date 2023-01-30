@@ -27,7 +27,13 @@ const errors = {
     errorCode: "INVALID_TOKEN",
     statusCode: 401,
     errorMsg: "유효하지 않은 토큰입니다"
-  }
+  },
+
+  CANT_UPDATE_USER_INFORMATION: {
+    errorCode: "CANT_UPDATE_USER_INFORMATION",
+    statusCode: 401,
+    errorMsg: "사용자 정보를 업데이트하는 과정에서 오류가 발생했습니다. "
+  },
 };
 
 export default errors;
