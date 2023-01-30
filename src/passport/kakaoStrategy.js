@@ -22,7 +22,7 @@ export default() => {
                     snsNickName: profile.displayName,
                     snsId: profile.id,
                     provider: 'kakao',
-                  });
+                  }); 
                   done(null, newUser); // 회원가입한 유저의 정보를 담아 리턴
                }
             //로그인 에러 발생시 api에러 발생.
