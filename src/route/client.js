@@ -11,8 +11,6 @@ import asyncWrapper from "../util/asyncWrapper";
 import validation from "../middleware/validation";
 import APIError from "../util/apiError";
 import errors from "../util/errors";
-import jwt from "jsonwebtoken";
-import crypto from "crypto";
 
 const router = Router();
 // 네이버는 필수정보 항목에 체크를 하지 않아도 로그인이 된다. 필수 항목 또한 사용자가 선택할 수 있다는데, 그럼 선택이랑 다를게 없어 보이는데 왜 그랬는지 알 수 없다. 참고
@@ -51,12 +49,14 @@ router.get('/naver/callback',
       failureRedirect: '/fail'
    }), (req, res) => {
       const accessToken = generateAccessToken(req.user.id);
-      const refreshToken = generateRefreshToken(req.user.id)
+      const refreshToken = generateRefreshToken(req.user.id);
 
-      res.json({
-         accessToken,
-         refreshToken,
-      })
+      if (req.user.loginLog == false) { 
+         res.redirect("/client/add-data"); //여기에 response 다시면 될것 같습니다
+      }
+      else if (req.user.loginLog == true) {
+         res.redirect('/success');//여기에 response 다시면 될것 같습니다
+      }
    },
 );
 
@@ -86,12 +86,14 @@ router.get('/kakao/callback',
       //로그인 실패시 get 요청할 주소.
       failureRedirect: '/fail'
    }), (req, res) => {
+      const accessToken = generateAccessToken(req.user.id);
+      const refreshToken = generateRefreshToken(req.user.id);
       // 만약 추가 데이터를 적지 않았다면 (신규 사용자라면)
       if (req.user.loginLog == false) {
          // console.log(req.user.id);
          // console.log(req.session.passport.user);
 
-         res.redirect("/client/adddata");
+         res.redirect("/client/add-data");
       }
       else if (req.user.loginLog == true) {
          //로그인 성공시 get 요청할 주소 (메인화면으로 보낸다.)
@@ -124,7 +126,15 @@ router.get('/google/callback',
    passport.authenticate('google', {
       failureRedirect: '/fail'
    }), (req, res) => {
-      res.redirect('/success');
+      const accessToken = generateAccessToken(req.user.id);
+      const refreshToken = generateRefreshToken(req.user.id);
+
+      if (req.user.loginLog == false) {
+         res.redirect("/client/add-data");
+      }
+      else if (req.user.loginLog == true) {
+         res.redirect('/success');   
+      }
    },
 );
 
@@ -137,17 +147,7 @@ router.get('/success', async (req, res) => {
    res.send('로그인 성공');
 });
 
-router.get('/test', verifyToken, async (req, res) => {
-   res.json({
-      id: req.app.user.id
-   })
-});
-
-router.get('/adddata', async (req, res) => {
-   console.log(req.user);
-});
-
-router.post('/adddata', async (req, res) => {
+router.post('/add-data', async (req, res) => {
    console.log(req.user)
    const userId = req.user.id;
    const { nickName, gender, local, birthDay } = req.body;
@@ -160,7 +160,12 @@ router.post('/adddata', async (req, res) => {
          loginLog : true
       });
    } catch(error) {
-      console.error(error)
+      //사용자 정보를 업데이트하는 과정에서 오류가 발생했습니다. 
+      throw new APIError(
+         errors.CANT_UPDATE_USER_INFORMATION.statusCode,
+         errors.CANT_UPDATE_USER_INFORMATION.errorCode,
+         errors.CANT_UPDATE_USER_INFORMATION.errorMsg
+      )
    }
 });
 

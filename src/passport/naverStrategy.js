@@ -14,7 +14,6 @@
 import passport from 'passport';
 import User from '../../schemas/users';
 
-// const { Strategy: NaverStrategy, Profile: NaverProfile } = require('passport-naver-v2');
 import { Strategy as NaverStrategy } from "passport-naver"
 
 export default() => {
@@ -27,46 +26,24 @@ export default() => {
             callbackURL: '/client/naver/callback',
          },
          async (accessToken, refreshToken, profile, done) => {
-            // // 네이버 프로필 정보 출력
-            // console.log("엑세스 토큰",accessToken)
-            // console.log("리프레시 토큰",refreshToken)
-            // console.log('naver profile : ', profile);
             try {
                //User DB에서 네이버로 간편 로그인한 유저가 있는지 검색.
-               const exUser = await User.findOne(
-                  // 네이버 플랫폼에서 로그인 했고 & snsId필드에 네이버 아이디가 일치할경우
-                  { snsId: profile._json.id, provider: 'naver' },
-               );
+               const exUser = await User.findOne({ snsId: profile._json.id, provider: 'naver' });
                // 이미 가입된 네이버 프로필이면 로그인 성공
                if (exUser) {
-                  //토큰 올리는 부분 
-                  await User.updateOne({
-                     email: profile._json.email,
-                     provider: 'naver'
-                  }, { $set: {accessToken: accessToken,
-                              refreshToken: refreshToken, }})
-
-                  done(null, exUser)
-                  //done(null, exUser); // 기존 가입한 유저의 정보를 담아 리턴
+                  done(null, exUser) // 기존 가입한 유저의 정보를 담아 리턴
                } else {
-                  console.log('신규 회원');
-                  console.log(accessToken);
-                  console.log(refreshToken);
                   // 가입되지 않는 유저면 회원가입 시키고 로그인을 시킨다
                   const newUser = await User.create({
                      email: profile._json.email,
                      snsNickName: profile._json.nickname,
                      snsId: profile._json.id,
                      provider: 'naver',
-                     accessToken: accessToken,
-                     refreshToken: refreshToken,
                   });
                   done(null, newUser)
-                  // done(null, newUser); // 회원가입한 유저의 정보를 담아 리턴
                }
                //로그인 에러 발생시 api에러 발생.
             } catch (error) {
-               console.error(error);
                done(error);
             }
          },
