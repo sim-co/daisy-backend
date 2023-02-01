@@ -51,11 +51,22 @@ router.get('/naver/callback',
       const accessToken = generateAccessToken(req.user.id);
       const refreshToken = generateRefreshToken(req.user.id);
 
-      if (req.user.loginLog == false) { 
-         res.redirect("/client/add-data"); //여기에 response 다시면 될것 같습니다
+      if (req.user.loginLog == false) {
+         // console.log(req.user.id);
+         // console.log(req.session.passport.user);
+         const query = querystring.stringify({
+            "access" : accessToken,
+            "refresh" : refreshToken
+         });
+         res.redirect("/client/add-data?" + query);
       }
       else if (req.user.loginLog == true) {
-         res.redirect('/success');//여기에 response 다시면 될것 같습니다
+         //로그인 성공시 get 요청할 주소 (메인화면으로 보낸다.)
+         const query = querystring.stringify({
+            "access" : accessToken,
+            "refresh" : refreshToken
+         });
+         res.redirect('/main' + query);
       }
    },
 );
@@ -100,7 +111,11 @@ router.get('/kakao/callback',
       }
       else if (req.user.loginLog == true) {
          //로그인 성공시 get 요청할 주소 (메인화면으로 보낸다.)
-         res.redirect('/success');
+         const query = querystring.stringify({
+            "access" : accessToken,
+            "refresh" : refreshToken
+         });
+         res.redirect('/main' + query);
       }
    },
 );
@@ -133,10 +148,21 @@ router.get('/google/callback',
       const refreshToken = generateRefreshToken(req.user.id);
 
       if (req.user.loginLog == false) {
-         res.redirect("/client/add-data");
+         // console.log(req.user.id);
+         // console.log(req.session.passport.user);
+         const query = querystring.stringify({
+            "access" : accessToken,
+            "refresh" : refreshToken
+         });
+         res.redirect("/client/add-data?" + query);
       }
       else if (req.user.loginLog == true) {
-         res.redirect('/success');   
+         //로그인 성공시 get 요청할 주소 (메인화면으로 보낸다.)
+         const query = querystring.stringify({
+            "access" : accessToken,
+            "refresh" : refreshToken
+         });
+         res.redirect('/main' + query);
       }
    },
 );
