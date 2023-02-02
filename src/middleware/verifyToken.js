@@ -24,8 +24,8 @@ export function verifyToken(req, res, next) {
       } else {
         const user = await User.findById(myToken.userid);
         res.app.user = user;
-        console.log(user);
       }
+      // 이부분이 문제, 만약 엑세스 토큰을 재발급된 했을 경우 프론트에 이 재발급된 토큰을 어떻게 전달할지?
       return next();
     } catch(error) {
       console.log(error);
@@ -38,33 +38,6 @@ export function verifyToken(req, res, next) {
         );
       }
     }
-  //   try {
-  //     //위변조, 만료되지 않은경우 토큰값을 디코딩하여 저장?
-
-  //     console.log(userid)
-
-  //     const user = await User.findById(userid);
-  //     console.log(user)
-
-  //     res.app.user = user;
-  //     return next();
-  //   } catch (error) {
-  //     //헤더 혹은 페이로드가 위변조 되었는지, 토큰의 유효기간이 초과되었는지 확인
-  //     if (error.name === "TokenExpiredError") {
-  //       // 유효기간 초과
-  //       throw new APIError(
-  //         errors.TOKEN_EXPIRED.statusCode,
-  //         errors.TOKEN_EXPIRED.errorCode,
-  //         errors.TOKEN_EXPIRED.errorMsg
-  //       );
-  //     } else if (error.name === "JsonWebTokenError") {
-  //       throw new APIError(
-  //         errors.INVALID_TOKEN.statusCode,
-  //         errors.INVALID_TOKEN.errorCode,
-  //         errors.INVALID_TOKEN.errorMsg
-  //       );
-  //     }
-  //   }
   };
   asyncWrapper(origin)(req, res, next);
 }
