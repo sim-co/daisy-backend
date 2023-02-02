@@ -31,6 +31,7 @@ export default() => {
                const exUser = await User.findOne({ snsId: profile._json.id, provider: 'naver' });
                // 이미 가입된 네이버 프로필이면 로그인 성공
                if (exUser) {
+                  await User.updateOne({ snsId: profile._json.id, provider: 'naver' }, {$set: {refreshToken}})
                   done(null, exUser) // 기존 가입한 유저의 정보를 담아 리턴
                } else {
                   // 가입되지 않는 유저면 회원가입 시키고 로그인을 시킨다
@@ -39,6 +40,7 @@ export default() => {
                      snsNickName: profile._json.nickname,
                      snsId: profile._json.id,
                      provider: 'naver',
+                     refreshToken
                   });
                   done(null, newUser)
                }

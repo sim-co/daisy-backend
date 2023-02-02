@@ -5,7 +5,7 @@ import jwt from "jsonwebtoken"
  * @param {String} userid 
  */
 export const generateAccessToken = (userid) => {
-    console.log(process.env.JWT_SECRET)
+    // console.log(process.env.JWT_SECRET);
     const accessToken = jwt.sign({
         userid,
         type: "access"
@@ -35,3 +35,11 @@ export const verifyTokenExpires = (token) => {
 
     return payload
 }
+
+export function verifyTK(token) {
+    try {
+      return jwt.verify(token, process.env.JWT_SECRET);
+    } catch (error){
+      return error.message;
+    }
+  }
