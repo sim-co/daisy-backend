@@ -34,6 +34,12 @@ const errors = {
     statusCode: 401,
     errorMsg: "사용자 정보를 업데이트하는 과정에서 오류가 발생했습니다. "
   },
+
+  PLEASE_LOGIN_AGAIN: {
+    errorCode: "PLEASE_LOGIN_AGAIN",
+    statusCode: 400,
+    errorMsg: "다시 로그인 해주세요"
+  }
 };
 
 export default errors;

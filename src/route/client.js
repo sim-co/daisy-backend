@@ -13,6 +13,11 @@ import APIError from "../util/apiError";
 import errors from "../util/errors";
 
 const router = Router();
+
+router.get('/test', verifyToken, async (req, res) => {
+   res.send('인가 성공1');
+});
+
 // 네이버는 필수정보 항목에 체크를 하지 않아도 로그인이 된다. 필수 항목 또한 사용자가 선택할 수 있다는데, 그럼 선택이랑 다를게 없어 보이는데 왜 그랬는지 알 수 없다. 참고
 
 // 이 부분은 서비스를 개발할 때 문제가 된다. 네아로에서 받은 이메일을 통해 서비스에 회원가입을 하는 로직이 있다면 서비스 서버에서는 오류를 내뱉을 것이다.
@@ -50,24 +55,23 @@ router.get('/naver/callback',
    }), (req, res) => {
       const accessToken = generateAccessToken(req.user.id);
       const refreshToken = generateRefreshToken(req.user.id);
-
-      if (req.user.loginLog == false) {
-         // console.log(req.user.id);
-         // console.log(req.session.passport.user);
-         const query = querystring.stringify({
-            "access" : accessToken,
-            "refresh" : refreshToken
-         });
-         res.redirect("/client/add-data?" + query);
-      }
-      else if (req.user.loginLog == true) {
-         //로그인 성공시 get 요청할 주소 (메인화면으로 보낸다.)
-         const query = querystring.stringify({
-            "access" : accessToken,
-            "refresh" : refreshToken
-         });
-         res.redirect('/main' + query);
-      }
+      console.log("로그인 완료");
+      res.send(accessToken);
+      // if (req.user.loginLog == false) {
+      //    const query = querystring.stringify({
+      //       "access" : accessToken,
+      //       "refresh" : refreshToken
+      //    });
+      //    res.redirect("/client/add-data?" + query);
+      // }
+      // else if (req.user.loginLog == true) {
+      //    //로그인 성공시 get 요청할 주소 (메인화면으로 보낸다.)
+      //    const query = querystring.stringify({
+      //       "access" : accessToken,
+      //       "refresh" : refreshToken
+      //    });
+      //    res.redirect('/main' + query);
+      // }
    },
 );
 
@@ -101,8 +105,6 @@ router.get('/kakao/callback',
       const refreshToken = generateRefreshToken(req.user.id);
       // 만약 추가 데이터를 적지 않았다면 (신규 사용자라면)
       if (req.user.loginLog == false) {
-         // console.log(req.user.id);
-         // console.log(req.session.passport.user);
          const query = querystring.stringify({
             "access" : accessToken,
             "refresh" : refreshToken
