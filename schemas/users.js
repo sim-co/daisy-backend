@@ -66,6 +66,20 @@ const userSchema = new Schema({
     required: false, 
     unique: false,
   },
+
+  // 친구 연결
+  connection: {
+    type: Boolean,
+    required: true, 
+    unique: false,
+    default : false
+  },
+  connection_id: {
+    type: String,
+    required: false, 
+    unique: false,
+  },
+
 });
 const data = mongoose.model('User', userSchema);
 export default data

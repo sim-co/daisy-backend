@@ -39,6 +39,8 @@ app.get("/", (req, res) => {
   res.send("Hello World");
 })
 
+// 라우터 모음
+
 /**
  * @swagger
  * tags:
@@ -46,7 +48,10 @@ app.get("/", (req, res) => {
  *   description: 유저 추가 수정 삭제 조회
 */
 import client from "./route/client";
+import friendConnect from "./route/friendConnect";
+
 app.use("/client", client);
+app.use("/friendConnect", friendConnect);
 
 app.use((err, req, res, next) => {
   const { statusCode, errorCode, errorMsg } = err
