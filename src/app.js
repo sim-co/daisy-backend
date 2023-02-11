@@ -45,7 +45,7 @@ app.get("/", (req, res) => {
  * @swagger
  * tags:
  *   name: client
- *   description: 유저 추가 수정 삭제 조회
+ *   description: 간편로그인 및 추가정보 추가
 */
 import client from "./route/client";
 import friendConnect from "./route/friendConnect";

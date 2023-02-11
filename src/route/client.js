@@ -32,8 +32,8 @@ router.get('/test', verifyToken, async (req, res) => {
  *
  * /client/naver:
  *  get:
- *    summary: "네이버 간편 로그인 페이지"
- *    description: "로그인 인증 시 Redirect URL로 보낸다."
+ *    summary: "네이버 Oauth인증 간편 로그인 페이지"
+ *    description: "로그인 인증 시 설정한 callBack URL로 보낸다."
  *    tags: [client]
  */
 router.get('/naver', passport.authenticate('naver'));
@@ -41,17 +41,17 @@ router.get('/naver', passport.authenticate('naver'));
 /**
  * @swagger
  *
- * /client/naver/:
+ * /client/naver/callback:
  *  post:
- *    summary: "네이버 간편 로그인"
- *    description: "POST 방식으로 네이버에 간편 로그인 요청을 보냄. 로그인 성공시 /success 로 리다이렉트 됩니다.(임시)"
+ *    summary: "네이버 Oauth callBack URL"
+ *    description: "회원가입 또는 로그인 처리 성공시 추가데이터를 적지않았다면 /client/add-data, 추가데이터를 적었다면 /main 으로 refreshTK, accessTK을 querystring으로담아 redirect시킨다. 로그인실패시 /fail로 redirect된다."
  *    tags: [client]
  */
 router.get('/naver/callback',
    //그리고 passport 로그인 전략에 의해 naverStrategy로 가서 카카오계정 정보와 DB를 비교해서 회원가입시키거나 로그인 처리하게 한다.
    passport.authenticate('naver', {
       //로그인 실패시 get 요청할 주소.
-      failureRedirect: '/fail'
+      failureRedirect: '/client/fail'
    }), (req, res) => {
       const accessToken = generateAccessToken(req.user.id);
       const refreshToken = generateRefreshToken(req.user.id);
@@ -80,8 +80,8 @@ router.get('/naver/callback',
  *
  * /client/kakao:
  *  get:
- *    summary: "카카오 간편 로그인 페이지"
- *    description: "로그인 인증 시 Redirect URL로 보낸다."
+ *    summary: "카카오 Oauth인증 간편 로그인 페이지"
+ *    description: "로그인 인증 시 설정한 callBack URL로 보낸다."
  *    tags: [client]
  */
 router.get('/kakao', passport.authenticate('kakao'));
@@ -91,15 +91,15 @@ router.get('/kakao', passport.authenticate('kakao'));
  *
  * /client/kakao/callback:
  *  post:
- *    summary: "카카오 간편 로그인"
- *    description: "POST 방식으로 카카오에 간편 로그인 요청을 보냄. 로그인 성공시 /success 로 리다이렉트 됩니다.(임시)"
+ *    summary: "카카오 Oauth callBack URL"
+ *    description: "회원가입 또는 로그인 처리 성공시 추가데이터를 적지않았다면 /client/add-data, 추가데이터를 적었다면 /main 으로 refreshTK, accessTK을 querystring으로담아 redirect시킨다. 로그인실패시 /fail로 redirect된다."
  *    tags: [client]
  */
 router.get('/kakao/callback',
    //그리고 passport 로그인 전략에 의해 naverStrategy로 가서 카카오계정 정보와 DB를 비교해서 회원가입시키거나 로그인 처리하게 한다.
    passport.authenticate('kakao', {
       //로그인 실패시 get 요청할 주소.
-      failureRedirect: '/fail'
+      failureRedirect: '/client/fail'
    }), (req, res) => {
       const accessToken = generateAccessToken(req.user.id);
       const refreshToken = generateRefreshToken(req.user.id);
@@ -127,8 +127,8 @@ router.get('/kakao/callback',
  *
  * /client/google:
  *  get:
- *    summary: "구글 간편 로그인 페이지"
- *    description: "로그인 인증 시 Redirect URL로 보낸다."
+ *    summary: "구글 Oauth인증 간편 로그인 페이지"
+ *    description: "로그인 인증 시 설정한 callBack URL로 보낸다."
  *    tags: [client]
  */
 router.get('/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
@@ -138,13 +138,13 @@ router.get('/google', passport.authenticate('google', { scope: ['profile', 'emai
  *
  * /client/google/callback:
  *  post:
- *    summary: "구글 간편 로그인"
- *    description: "POST 방식으로 카카오에 간편 로그인 요청을 보냄. 로그인 성공시 /success 로 리다이렉트 됩니다.(임시)"
+ *    summary: "구글 Oauth callBack URL"
+ *    description: "회원가입 또는 로그인 처리 성공시 추가데이터를 적지않았다면 /client/add-data, 추가데이터를 적었다면 /main 으로 refreshTK, accessTK을 querystring으로담아 redirect시킨다. 로그인실패시 /fail로 redirect된다."
  *    tags: [client]
  */
 router.get('/google/callback',
    passport.authenticate('google', {
-      failureRedirect: '/fail'
+      failureRedirect: '/client/fail'
    }), (req, res) => {
       const accessToken = generateAccessToken(req.user.id);
       const refreshToken = generateRefreshToken(req.user.id);
@@ -169,15 +169,46 @@ router.get('/google/callback',
    },
 );
 
-
 router.get('/fail', async (req, res) => {
    res.send('로그인 실패');
 });
 
-router.get('/success', async (req, res) => {
-   res.send('로그인 성공');
-});
-
+/**
+ * @swagger
+ *
+ * /client/add-data:
+ *  post:
+ *    summary: "추가데이터 추가"
+ *    description: "간편로그인에 성공한 유저 중 한번도 추가데이터를 적지않은 유저들을 위한 추가데이터 API"
+ *    tags: [client]
+ *    requestBody:
+ *       required: true
+ *       content:
+ *          application/json:
+ *             schema:
+ *                type: object
+ *                properties:
+ *                   nickName:
+ *                      type: string
+ *                   gender:
+ *                      type: string
+ *                   local:
+ *                      type: string
+ *                   birthDay:
+ *                      type: string
+ *    responses:
+ *       "200":
+ *          description: 추가된 데이터를 DB에 저장합니다.
+ *          content:
+ *             application/json:
+ *                example:
+ *                   nickName: jaehyung
+ *                   gender: male
+ *                   local: korea
+ *                   birthDay: 1996-03-02
+ *                   loginLog: true
+ * 
+ */
 router.post('/add-data', async (req, res) => {
    console.log(req.user)
    const userId = req.user.id;
