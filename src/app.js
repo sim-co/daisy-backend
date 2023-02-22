@@ -48,10 +48,10 @@ app.get("/", (req, res) => {
  *   description: 간편로그인 및 추가정보 추가
 */
 import client from "./route/client";
-import friendConnect from "./route/friendConnect";
+import friendconnect from "./route/friend-connect";
 
 app.use("/client", client);
-app.use("/friendConnect", friendConnect);
+app.use("/friend-connect", friendconnect);
 
 app.use((err, req, res, next) => {
   const { statusCode, errorCode, errorMsg } = err

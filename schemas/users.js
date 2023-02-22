@@ -74,6 +74,13 @@ const userSchema = new Schema({
     unique: false,
     default : false
   },
+
+  my_connection_id: {
+    type: String,
+    required: false, 
+    unique: false,
+  },
+
   connection_id: {
     type: String,
     required: false, 

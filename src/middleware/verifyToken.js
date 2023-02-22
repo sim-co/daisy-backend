@@ -15,6 +15,7 @@ export function verifyToken(req, res, next) {
       throw new JsonWebTokenError("Authorization is not Bearer")
     }
     let token = req.headers.authorization.split("Bearer ")[1]
+    // console.log(token)
     try{
       const myToken = verifyTK(token);
       if (myToken === "jwt expired") {

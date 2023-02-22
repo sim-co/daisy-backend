@@ -39,6 +39,16 @@ const errors = {
     errorCode: "PLEASE_LOGIN_AGAIN",
     statusCode: 400,
     errorMsg: "다시 로그인 해주세요"
+  },
+  FRIEND_CODE_ERROR: {
+    errorCode: "FRIEND_CODE_ERROR",
+    statusCode: 400,
+    errorMsg: "DB내 대응되는 친구코드를 찾을 수 없거나 ID가 일치하지않습니다."
+  },
+  FRIEND_CODE_CREATE_ERROR: {
+    errorCode: "FRIEND_CODE_CREATE_ERROR",
+    statusCode: 400,
+    errorMsg: "DB내 ID를 찾을 수 없거나 틀렸습니다."
   }
 };
 
