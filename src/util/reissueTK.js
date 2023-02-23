@@ -28,7 +28,7 @@ export async function reissueTK(token) {
             // console.log(accessToken);
 
             //토큰이 너무 길어서인지 리턴보내면 undefine값으로 뜹니다.
-            return accessToken
+            return accessToken.toString('base64');
         })
     } catch (error) {
         console.log(error)

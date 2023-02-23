@@ -19,8 +19,8 @@ export function verifyToken(req, res, next) {
       const myToken = verifyTK(token);
       if (myToken === "jwt expired") {
         // access토큰 만료시 재발급
-        await reissueTK(token);
-        console.log("토큰 재발급 완료!");
+        token = await reissueTK(token);
+        console.log("토큰 재발급 완료!", token);
       } else {
         const user = await User.findById(myToken.userid);
         res.app.user = user;
