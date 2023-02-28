@@ -56,22 +56,22 @@ router.get('/naver/callback',
       const accessToken = generateAccessToken(req.user.id);
       const refreshToken = generateRefreshToken(req.user.id);
       console.log("로그인 완료");
-      res.send(accessToken);
-      // if (req.user.loginLog == false) {
-      //    const query = querystring.stringify({
-      //       "access" : accessToken,
-      //       "refresh" : refreshToken
-      //    });
-      //    res.redirect("/client/add-data?" + query);
-      // }
-      // else if (req.user.loginLog == true) {
-      //    //로그인 성공시 get 요청할 주소 (메인화면으로 보낸다.)
-      //    const query = querystring.stringify({
-      //       "access" : accessToken,
-      //       "refresh" : refreshToken
-      //    });
-      //    res.redirect('/main' + query);
-      // }
+      // res.send(accessToken);
+      if (req.user.loginLog == false) {
+         const query = querystring.stringify({
+            "access" : accessToken,
+            "refresh" : refreshToken
+         });
+         res.redirect("/client/add-data?" + query);
+      }
+      else if (req.user.loginLog == true) {
+         //로그인 성공시 get 요청할 주소 (메인화면으로 보낸다.)
+         const query = querystring.stringify({
+            "access" : accessToken,
+            "refresh" : refreshToken
+         });
+         res.redirect('/main' + query);
+      }
    },
 );
 
