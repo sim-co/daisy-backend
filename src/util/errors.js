@@ -49,7 +49,13 @@ const errors = {
     errorCode: "FRIEND_CODE_CREATE_ERROR",
     statusCode: 400,
     errorMsg: "DB내 ID를 찾을 수 없거나 틀렸습니다."
+  },
+  FRIEND_ALREADY_ADDED: {
+    errorCode: "FRIEND_ALREADY_ADDED",
+    statusCode: 400,
+    errorMsg: "이미 친구추가가 진행됨"
   }
+
 };
 
 export default errors;

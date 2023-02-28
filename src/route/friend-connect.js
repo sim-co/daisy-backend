@@ -42,7 +42,6 @@ router.post('/my-id', verifyToken, asyncWrapper( async (req, res) => {
             my_connection_id : friendCode
         });
         res.send("친구코드 생성이 완료되었습니다.");
-
     } catch(error) {
         throw new APIError(
            errors.FRIEND_CODE_CREATE_ERROR.statusCode,
@@ -86,6 +85,14 @@ router.post('/', verifyToken, body("friendConnectionCode").exists(), validation,
     try {
         const friend_db = await User.findOne({my_connection_id : friendConnectionCode});
 
+        // if (friend_db.connection == true) {
+        //     throw new APIError(
+        //         errors.FRIEND_ALREADY_ADDED.statusCode,
+        //         errors.FRIEND_ALREADY_ADDED.errorCode,
+        //         errors.FRIEND_ALREADY_ADDED.errorMsg,
+        //     )
+        // }
+
         if (friend_db == null) {
             throw new APIError(
                 errors.FRIEND_CODE_ERROR.statusCode,
@@ -93,7 +100,7 @@ router.post('/', verifyToken, body("friendConnectionCode").exists(), validation,
                 errors.FRIEND_CODE_ERROR.errorMsg
             )
         } 
-
+  
         const my_db = await User.findByIdAndUpdate(myId, {
             connection : true,
             connection_id : friendConnectionCode
@@ -103,8 +110,8 @@ router.post('/', verifyToken, body("friendConnectionCode").exists(), validation,
             connection : true,
             connection_id : my_db.my_connection_id
         });
-        
         console.log(friend_db);
+        res.send('끝');
     } catch(error) {
         throw new APIError(
            errors.FRIEND_CODE_ERROR.statusCode,
