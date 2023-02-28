@@ -25,18 +25,6 @@ const userSchema = new Schema({
     unique: false,
   },
 
-  // Token
-  accessToken: {
-    type: String,
-    required: false, 
-    unique: false,
-  },
-  refreshToken: {
-    type: String,
-    required: false, 
-    unique: false,
-  },
-
   // 추가데이터 여부 확인
   loginLog: {
     type: Boolean,

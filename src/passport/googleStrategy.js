@@ -19,7 +19,7 @@ export default() => {
                } else {
                   const newUser = await User.create({
                     email: profile._json.email,
-                    nick: profile._json.email,
+                    snsNickName: profile._json.email,
                     snsId: profile.id,
                     provider: 'google',
                   });
