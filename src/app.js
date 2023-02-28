@@ -41,6 +41,7 @@ app.get("/", (req, res) => {
 
 // 라우터 모음
 
+
 /**
  * @swagger
  * tags:
@@ -48,9 +49,15 @@ app.get("/", (req, res) => {
  *   description: 간편로그인 및 추가정보 추가
 */
 import client from "./route/client";
-import friendconnect from "./route/friend-connect";
-
 app.use("/client", client);
+
+/**
+ * @swagger
+ * tags:
+ *   name: friend-connect
+ *   description: 친구코드 생성 및 친구코드 연결
+*/
+import friendconnect from "./route/friend-connect";
 app.use("/friend-connect", friendconnect);
 
 app.use((err, req, res, next) => {

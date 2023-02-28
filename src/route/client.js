@@ -55,8 +55,6 @@ router.get('/naver/callback',
    }), (req, res) => {
       const accessToken = generateAccessToken(req.user.id);
       const refreshToken = generateRefreshToken(req.user.id);
-      console.log("로그인 완료");
-      // res.send(accessToken);
       if (req.user.loginLog == false) {
          const query = querystring.stringify({
             "access" : accessToken,
@@ -150,8 +148,6 @@ router.get('/google/callback',
       const refreshToken = generateRefreshToken(req.user.id);
 
       if (req.user.loginLog == false) {
-         // console.log(req.user.id);
-         // console.log(req.session.passport.user);
          const query = querystring.stringify({
             "access" : accessToken,
             "refresh" : refreshToken
@@ -209,7 +205,7 @@ router.get('/fail', async (req, res) => {
  *                   loginLog: true
  * 
  */
-router.post('/add-data', async (req, res) => {
+router.post('/add-data', asyncWrapper ( async (req, res) => {
    console.log(req.user)
    const userId = req.user.id;
    const { nickName, gender, local, birthDay } = req.body;
@@ -221,6 +217,7 @@ router.post('/add-data', async (req, res) => {
          birthDay: birthDay,
          loginLog : true
       });
+      res.send("add-data 완료");
    } catch(error) {
       //사용자 정보를 업데이트하는 과정에서 오류가 발생했습니다. 
       throw new APIError(
@@ -229,6 +226,6 @@ router.post('/add-data', async (req, res) => {
          errors.CANT_UPDATE_USER_INFORMATION.errorMsg
       )
    }
-});
+}));
 
 export default router;
