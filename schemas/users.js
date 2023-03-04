@@ -75,6 +75,12 @@ const userSchema = new Schema({
     unique: false,
   },
 
+  //코스 정보
+  course_ids: {
+    type: Array,
+    required: false, 
+    unique: false,
+  }
 });
 const data = mongoose.model('User', userSchema);
 export default data
