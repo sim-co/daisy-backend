@@ -74,7 +74,6 @@ const userSchema = new Schema({
     required: false, 
     unique: false,
   },
-
 });
 const data = mongoose.model('User', userSchema);
 export default data

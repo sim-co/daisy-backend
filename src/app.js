@@ -7,9 +7,8 @@ import session from "express-session";
 import connect from "../schemas";
  
 const app = express();
-const port = 3000;
-
 dotenv.config();
+const port = process.env.PORT;
 
 // 몽고 디비 연결
 connect(); 
@@ -41,7 +40,6 @@ app.get("/", (req, res) => {
 
 // 라우터 모음
 
-
 /**
  * @swagger
  * tags:
@@ -59,6 +57,15 @@ app.use("/client", client);
 */
 import friendconnect from "./route/friend-connect";
 app.use("/friend-connect", friendconnect);
+
+/**
+ * @swagger
+ * tags:
+ *   name: main
+ *   description: 메인화면
+*/
+import main from "./route/main";
+app.use('/main',main);
 
 app.use((err, req, res, next) => {
   const { statusCode, errorCode, errorMsg } = err
