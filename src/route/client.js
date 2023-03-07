@@ -11,10 +11,13 @@ import asyncWrapper from "../util/asyncWrapper";
 import validation from "../middleware/validation";
 import APIError from "../util/apiError";
 import errors from "../util/errors";
+import { reissueTK } from "../util/reissueTK";
 
 const router = Router();
 
-const loginRedirectUriPrefix = "daisy-app://?";
+// const loginRedirectUriPrefix = "daisy-app://?";
+const loginRedirectUriPrefix = "redirect  ";
+
 
 router.get("/test", verifyToken, async (req, res) => {
   res.send("인가 성공1");
@@ -176,6 +179,16 @@ router.get(
 router.get("/fail", async (req, res) => {
   res.send("로그인 실패");
 });
+
+router.post("/refresh", body("refreshToken").exists(), validation, asyncWrapper(async (req, res) => {
+  const { refreshToken } = req.body;
+
+  const reissuedAccessToken = await reissueTK(refreshToken);
+
+  res.status(200).json({
+    accessToken: reissuedAccessToken
+  });
+}));
 
 /**
  * @swagger
