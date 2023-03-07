@@ -5,6 +5,8 @@ import errors from "../util/errors";
 const validation = (req, res, next) => {
   const result = validationResult(req);
 
+  console.log(result);
+
   if (result.errors.length > 0) {
     throw new APIError(
       errors.VALIDATION_ERROR.statusCode,
