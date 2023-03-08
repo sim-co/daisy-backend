@@ -16,8 +16,7 @@ import { reissueTK } from "../util/reissueTK";
 const router = Router();
 
 // const loginRedirectUriPrefix = "daisy-app://?";
-const loginRedirectUriPrefix = "redirect  ";
-
+const loginRedirectUriPrefix = "daisy-app://?";
 
 router.get("/test", verifyToken, async (req, res) => {
   res.send("인가 성공1");
@@ -180,15 +179,20 @@ router.get("/fail", async (req, res) => {
   res.send("로그인 실패");
 });
 
-router.post("/refresh", body("refreshToken").exists(), validation, asyncWrapper(async (req, res) => {
-  const { refreshToken } = req.body;
+router.post(
+  "/refresh",
+  body("refreshToken").exists(),
+  validation,
+  asyncWrapper(async (req, res) => {
+    const { refreshToken } = req.body;
 
-  const reissuedAccessToken = await reissueTK(refreshToken);
+    const reissuedAccessToken = await reissueTK(refreshToken);
 
-  res.status(200).json({
-    accessToken: reissuedAccessToken
-  });
-}));
+    res.status(200).json({
+      accessToken: reissuedAccessToken,
+    });
+  })
+);
 
 /**
  * @swagger
