@@ -9,6 +9,13 @@ import validation from "../middleware/validation";
 
 const router = Router();
 
+/**
+ * @swagger
+ * tags:
+ *   name: friend
+ *   description: 친구코드 생성 및 친구코드 연결
+*/
+
 // 친구코드 생성
 function generateFriendCode(id) {
     // id 값을 기반으로 랜덤 문자열 생성

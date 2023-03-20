@@ -16,6 +16,13 @@ import { type } from "os";
 
 const router = Router();
 
+/**
+ * @swagger
+ * tags:
+ *   name: main
+ *   description: 메인화면
+*/
+
 router.post('/add-course',verifyToken,asyncWrapper( async(req, res) => {
     const userInfo = await User.findById(res.app.user.id);
     //데이트 코스 추가하는 로직은 추후에 개발 예정

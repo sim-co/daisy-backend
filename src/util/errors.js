@@ -17,6 +17,12 @@ const errors = {
   },
   // 여기서 에러 정보를 기록하시고 사용하시면 됩니다.
 
+  CALLBACK_REDIRECT_ERROR: {
+    errorCode: "CALLBACK_REDIRECT_ERROR",
+    statusCode: 401,
+    errorMsg: "passport callback 과정에서 오류가 발생했습니다."
+  },
+
   TOKEN_EXPIRED: {
     errorCode: "TOKEN_EXPIRED",
     statusCode: 401,
