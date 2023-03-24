@@ -40,32 +40,17 @@ app.get("/", (req, res) => {
 
 // 라우터 모음
 
-/**
- * @swagger
- * tags:
- *   name: client
- *   description: 간편로그인 및 추가정보 추가
-*/
-import client from "./route/client";
-app.use("/client", client);
 
-/**
- * @swagger
- * tags:
- *   name: friend-connect
- *   description: 친구코드 생성 및 친구코드 연결
-*/
-import friendconnect from "./route/friend-connect";
-app.use("/friend-connect", friendconnect);
+import router from "./router/index";
+app.use(router);
 
-/**
- * @swagger
- * tags:
- *   name: main
- *   description: 메인화면
-*/
-import main from "./route/main";
-app.use('/main',main);
+
+// import friendconnect from "./route/friend-connect";
+// app.use("/friend-connect", friendconnect);
+
+
+// import main from "./route/main";
+// app.use('/main',main);
 
 app.use((err, req, res, next) => {
   const { statusCode, errorCode, errorMsg } = err
