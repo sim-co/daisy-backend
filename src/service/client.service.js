@@ -10,6 +10,7 @@ import User from "../../schemas/users";
  */
 const generateQueryService = (userId) => {
     const accessToken = generateAccessToken(userId);
+    console.log(accessToken);
     const refreshToken = generateRefreshToken(userId);
     const query = querystring.stringify({
         access: accessToken,
