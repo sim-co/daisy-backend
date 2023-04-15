@@ -10,6 +10,52 @@ const router = Router();
  *   name: main
  *   description: 메인화면
 */
+
+/**
+ * @swagger
+ *
+ * /main/add-course:
+ *   post:
+ *     summary: "데이트코스 추가"
+ *     description: "데이트 코스를 추가한다."
+ *     tags: [main]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               courseName:
+ *                 type: string
+ *               course:
+ *                 type: array
+ *                 items:
+ *                   type: object
+ *                   properties:
+ *                     shopName:
+ *                       type: string
+ *                     order:
+ *                       type: integer
+ *                     coordinateX:
+ *                       type: integer
+ *                     coordinateY:
+ *                       type: integer
+ *             example:
+ *               courseName: "My Course"
+ *               course:
+ *               - shopName: "Shop 1"
+ *                 order: 1
+ *                 coordinateX: 10
+ *                 coordinateY: 20
+ *               - shopName: "Shop 2"
+ *                 order: 2
+ *                 coordinateX: 30
+ *                 coordinateY: 40
+ *     responses:
+ *       200:
+ *         description: OK
+ */
 router.post('/add-course', verifyToken, generateCourse)
 
 // router.post('/add-course',verifyToken,asyncWrapper( async(req, res) => {

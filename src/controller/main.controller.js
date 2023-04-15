@@ -13,8 +13,8 @@ const generateCourseInner = async (req, res) => {
     const myId = res.app.user.id;
     const courseName = req.body.courseName;
     const courseData = req.body.course;
-    const courseCode = await mainService.generateCourseService({myId, courseName, courseData});
-    return res.status(httpStatus.OK).json({ courseCode });
+    const course = await mainService.generateCourseService({myId, courseName, courseData});
+    return res.status(httpStatus.OK).json({ course });
 }
 
 export const generateCourse = asyncWrapper(generateCourseInner);
