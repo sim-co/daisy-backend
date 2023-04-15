@@ -20,11 +20,11 @@ const router = Router();
 /**
  * @swagger
  *
- * /friend-connect/my-id:
+ * /friend/my-id:
  *  post:
  *    summary: "친구코드 생성"
  *    description: "본인의 친구코드를 생성해준다."
- *    tags: [friend-connect]
+ *    tags: [friend]
  *    responses:
  *       "200":
  *          description: 추가된 데이터를 DB에 저장합니다.
@@ -39,11 +39,11 @@ router.post('/my-id', verifyToken, generateMyFriendCode);
 /**
  * @swagger
  *
- * /friend-connect:
+ * /friend/connect:
  *  post:
  *    summary: "친구코드 연결"
  *    description: "상대의 친구코드를 이용하여 친구 연결을 진행할 수 있다. (친구코드가 없을 시 오류)"
- *    tags: [friend-connect]
+ *    tags: [friend]
  *    requestBody:
  *       required: true
  *       content:
@@ -63,6 +63,6 @@ router.post('/my-id', verifyToken, generateMyFriendCode);
  *                   connection_id: "ABCAB123AC"
  * 
  */
-router.post('/', verifyToken, validation, FriendCodeConnect);
+router.post('/connect', verifyToken, FriendCodeConnect, validation);
 
 export default router;
