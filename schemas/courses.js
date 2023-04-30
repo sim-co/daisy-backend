@@ -12,6 +12,10 @@ const courseSchema = new Schema(
             required: true, // null 여부 (true면 null값이 들어갈 수 없음)
             unique: false, // 유니크 여부 (true면 값이 한개 이상 중복될 수 없음)
         },
+        courseName: {
+            type: String,
+            default: "비어있는 이름"
+        }
     },
     {timestamps: true}
 );
