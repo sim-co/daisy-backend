@@ -78,6 +78,6 @@ router.post('/', verifyToken, validation, FriendCodeConnect);
  *    responses:
  *       "200":
  */
-router.post('/disconnect', verifyToken, FriendDisconnect);
+router.delete('/disconnect', verifyToken, FriendDisconnect);
 
 export default router;

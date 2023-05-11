@@ -3,6 +3,7 @@ import errors from "../util/errors";
 import querystring from "querystring";
 import { generateAccessToken, generateRefreshToken } from "../util/jwt";
 import User from "../../schemas/users";
+import { body } from "express-validator";
 
 /**
  * access, refresh 토큰을 query에 담은 뒤 query값을 리턴
@@ -56,7 +57,19 @@ const loginLogAddData = async ({ userId, nickName, gender, local, birthDay }) =>
         );
       }
 }
+
+const userUdpate = async (myId, body) => {
+  const { nickName, gender, local, birthDay } = body;
+  const updatedUser = await User.findByIdAndUpdate(myId, {
+    nickName,
+    gender,
+    local,
+    birthDay
+  })
+  return updatedUser;
+}
 export default {
     generateQueryService,
-    loginLogAddData
+    loginLogAddData,
+    userUdpate
 }

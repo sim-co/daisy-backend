@@ -28,7 +28,19 @@ const addDataInner = async (req, res) => {
   return res.status(httpStatus.OK).json({ userAddData });
 }
 
+//유저 정보 수정
+/**
+ * 
+ * @param {Request} req 
+ * @param {Response} res
+ */
+const updateDataInner = async (req, res) => {
+  const myId = res.app.user.id;
+  const userUpdateData = await clientService.userUdpate(myId, req.body);
+  return res.status(httpStatus.OK).json({ userUpdateData })
+}
+
 export const callBackRedirect = callBackRedirectInner;
 export const addData = asyncWrapper(addDataInner);
-
+export const updateData = asyncWrapper(updateDataInner);
 
