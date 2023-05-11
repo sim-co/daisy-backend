@@ -186,6 +186,6 @@ router.post("/add-data", verifyToken, addData);
  *                   loginLog: true
  *
  */
-router.patch("/update-data", validation, verifyToken, updateData);
+router.patch("/update-data", verifyToken, updateData);
 
 export default router;
