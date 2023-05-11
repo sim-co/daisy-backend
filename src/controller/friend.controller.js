@@ -36,7 +36,7 @@ const FriendCodeConnectInner = async (req, res) => {
  */
 const FriendDisconnectInner = async (req, res) => {
     const myId = res.app.user.id;
-    const friendDisconnect = await friendService.disconnectFriendCode(myId);
+    await friendService.disconnectFriendCode(myId);
     return res.status(httpStatus.OK).json({ message: '친구 연결이 끊어졌습니다.'});
 }
 
