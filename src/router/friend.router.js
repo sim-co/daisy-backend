@@ -1,12 +1,7 @@
 import { Router } from "express";
 import { verifyToken } from "../middleware/verifyToken";
-import User from "../../schemas/users";
-import APIError from "../util/apiError";
-import errors from "../util/errors";
-import asyncWrapper from "../util/asyncWrapper";
-import { body } from "express-validator";
 import validation from "../middleware/validation";
-import { generateMyFriendCode, FriendCodeConnect } from "../controller/friend.controller"
+import { generateMyFriendCode, FriendCodeConnect, FriendDisconnect } from "../controller/friend.controller"
 
 const router = Router();
 
@@ -20,7 +15,7 @@ const router = Router();
 /**
  * @swagger
  *
- * /friend-connect/my-id:
+ * /friend/my-id:
  *  post:
  *    summary: "친구코드 생성"
  *    description: "본인의 친구코드를 생성해준다."
@@ -39,7 +34,7 @@ router.post('/my-id', verifyToken, generateMyFriendCode);
 /**
  * @swagger
  *
- * /friend-connect:
+ * /friend:
  *  post:
  *    summary: "친구코드 연결"
  *    description: "상대의 친구코드를 이용하여 친구 연결을 진행할 수 있다. (친구코드가 없을 시 오류)"
@@ -64,5 +59,25 @@ router.post('/my-id', verifyToken, generateMyFriendCode);
  * 
  */
 router.post('/', verifyToken, validation, FriendCodeConnect);
+
+/**
+ * @swagger
+ *
+ * /friend/disconnect:
+ *  delete:
+ *    summary: "친구연결 끊기"
+ *    description: "본인 정보 검색하여 연결되어 있는 친구와의 연결 정보를 끊을 수 있다."
+ *    tags: [friend-connect]
+ *    parameters:
+ *      - in: header
+ *        name: Authorization
+ *        description: JWT 토큰 값 (Bearer Token)
+ *        required: true
+ *        schema:
+ *          type: string
+ *    responses:
+ *       "200":
+ */
+router.post('/disconnect', verifyToken, FriendDisconnect);
 
 export default router;
