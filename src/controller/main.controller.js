@@ -11,8 +11,8 @@ import { Request, Response } from "express";
  */
 const generateCourseInner = async (req, res) => {
     const myId = res.app.user.id;
-    const { locationIds, courseName } = req.body;
-    const courseCode = await mainService.generateCourseService(myId, locationIds, courseName);
+    const { innerCourse, courseName } = req.body;
+    const courseCode = await mainService.generateCourseService(myId, innerCourse, courseName);
     return res.status(httpStatus.OK).json({ courseCode });
 }
 
@@ -28,5 +28,19 @@ const addLocationInner = async (req, res) => {
     return res.status(httpStatus.OK).json({ locationCode });
 }
 
+// 코스 삭제
+/**
+ * 
+ * @param {Request} req 
+ * @param {Response} res
+ */
+const deleteCourseInner = async (req, res) => {
+    const myId = req.params.myId;
+    const courseId = req.params.courseId;
+    const locationCode = await mainService.deleteCourseService(myId, courseId);
+    return res.status(httpStatus.OK).json({ locationCode });
+}
+
 export const generateCourse = asyncWrapper(generateCourseInner);
 export const addLocation = asyncWrapper(addLocationInner);
+export const deleteCourse = asyncWrapper(deleteCourseInner);

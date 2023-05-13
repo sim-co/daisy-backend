@@ -154,7 +154,7 @@ router.post("/add-data", verifyToken, addData);
  * @swagger
  *
  * /client/update-data:
- *  post:
+ *  patch:
  *    summary: "개인 정보 수정"
  *    description: "개인 정보 수정 API"
  *    tags: [client]

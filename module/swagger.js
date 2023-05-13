@@ -12,8 +12,8 @@ const options = {
         basePath: '/'
     },
     apis: [
-        "./src/*.js",
-        "./src/route/*.js"
+        "./src/**/*.js",
+        "./src/route/**/*.js"
     ]
 };
 

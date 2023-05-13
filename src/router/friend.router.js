@@ -19,7 +19,7 @@ const router = Router();
  *  post:
  *    summary: "친구코드 생성"
  *    description: "본인의 친구코드를 생성해준다."
- *    tags: [friend-connect]
+ *    tags: [friend]
  *    responses:
  *       "200":
  *          description: 추가된 데이터를 DB에 저장합니다.
@@ -38,7 +38,7 @@ router.post('/my-id', verifyToken, generateMyFriendCode);
  *  post:
  *    summary: "친구코드 연결"
  *    description: "상대의 친구코드를 이용하여 친구 연결을 진행할 수 있다. (친구코드가 없을 시 오류)"
- *    tags: [friend-connect]
+ *    tags: [friend]
  *    requestBody:
  *       required: true
  *       content:
@@ -67,7 +67,7 @@ router.post('/', verifyToken, validation, FriendCodeConnect);
  *  delete:
  *    summary: "친구연결 끊기"
  *    description: "본인 정보 검색하여 연결되어 있는 친구와의 연결 정보를 끊을 수 있다."
- *    tags: [friend-connect]
+ *    tags: [friend]
  *    parameters:
  *      - in: header
  *        name: Authorization

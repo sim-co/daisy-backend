@@ -10,7 +10,7 @@ import Location from '../../schemas/locations';
  * access, refresh 토큰을 query에 담은 뒤 query값을 리턴
  * @param {String} myId
  */
-const generateCourseService = async (myId, locationIds, courseName) => {
+const generateCourseService = async (myId, innerCourse, courseName) => {
     const userInfo = await User.findById(myId);
     let courseUserList = [];
     courseUserList.push(userInfo.id);
@@ -19,7 +19,7 @@ const generateCourseService = async (myId, locationIds, courseName) => {
             const friendInfo = await User.findOne({ my_connection_id: userInfo.connection_id})
             courseUserList.push(friendInfo.id);
         }
-        const course = await Course.create({ users: courseUserList, course: locationIds, courseName: courseName });
+        const course = await Course.create({ users: courseUserList, innerCourse: innerCourse, courseName: courseName });
         return course.id;
     } catch(e) {
         throw e;
@@ -40,7 +40,24 @@ const addLocationService = async (locationName, region, locationX, locationY, ca
     }
 }
 
+// const patchCourseService = async (myId, innerCourse, courseName) => {
+    
+// }
+
+const deleteCourseService = async (myId, courseId) => {
+    try{
+        const course = await Course.findByIdAndRemove({ _id: courseId, users: { $in: [myId] } });
+    } catch(error) {
+        throw new APIError(
+            errors.COURSE_DELETE_ERROR.statusCode,
+            errors.COURSE_DELETE_ERROR.errorCode,
+            errors.COURSE_DELETE_ERROR.errorMsg,
+        )
+    }
+}
+
 export default {
     generateCourseService,
-    addLocationService
+    addLocationService,
+    deleteCourseService
 }
