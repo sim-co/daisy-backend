@@ -6,7 +6,7 @@ import httpStatus, { NO_CONTENT } from "http-status";
 import asyncWrapper from "../util/asyncWrapper";
 import validation from "../middleware/validation";
 import { reissueTK } from "../util/reissueTK";
-import { callBackRedirect, addData } from "../controller/client.controller";
+import { callBackRedirect, addData, updateData } from "../controller/client.controller";
 
 const router = Router();
 
@@ -149,5 +149,43 @@ router.post(
  *
  */
 router.post("/add-data", verifyToken, addData);
+
+/**
+ * @swagger
+ *
+ * /client/update-data:
+ *  post:
+ *    summary: "개인 정보 수정"
+ *    description: "개인 정보 수정 API"
+ *    tags: [client]
+ *    requestBody:
+ *       required: true
+ *       content:
+ *          application/json:
+ *             schema:
+ *                type: object
+ *                properties:
+ *                   nickName:
+ *                      type: string
+ *                   gender:
+ *                      type: string
+ *                   local:
+ *                      type: string
+ *                   birthDay:
+ *                      type: string
+ *    responses:
+ *       "200":
+ *          description: 수정된 데이터를 DB에 저장합니다.
+ *          content:
+ *             application/json:
+ *                example:
+ *                   nickName: jaehyung
+ *                   gender: male
+ *                   local: korea
+ *                   birthDay: 1996-03-02
+ *                   loginLog: true
+ *
+ */
+router.patch("/update-data", verifyToken, updateData);
 
 export default router;

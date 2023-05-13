@@ -60,8 +60,12 @@ const errors = {
     errorCode: "FRIEND_ALREADY_ADDED",
     statusCode: 400,
     errorMsg: "이미 친구추가가 진행됨"
+  },
+  FRIEND_ALREADY_DISCONNECTED: {
+    errorCode: "FRIEND_ALREADY_DISCONNECTED",
+    statusCode: 400,
+    errorMsg: "이미 친구추가가 끊어짐"
   }
-
 };
 
 export default errors;
