@@ -25,7 +25,8 @@ const generateFriendCode =  async (myId) => {
 const connectCode = async ({myId, friendConnectionCode}) => {
     try {
         const friend_db = await User.findOne({my_connection_id : friendConnectionCode});
-        // if (friend_db.connection == true) {
+
+        // if (checkConnection) {
         //     throw new APIError(
         //         errors.FRIEND_ALREADY_ADDED.statusCode,
         //         errors.FRIEND_ALREADY_ADDED.errorCode,
@@ -60,7 +61,34 @@ const connectCode = async ({myId, friendConnectionCode}) => {
     }
 }
 
+const disconnectFriendCode = async (myId) => {
+    if (!await checkConnection(myId)) {
+        throw new APIError(
+            errors.FRIEND_ALREADY_DISCONNECTED.statusCode,
+            errors.FRIEND_ALREADY_DISCONNECTED.errorCode,
+            errors.FRIEND_ALREADY_DISCONNECTED.errorMsg,
+        )
+    }
+    const myInformation = await User.findByIdAndUpdate(myId, {
+        connection : false,
+        connection_id : null
+    });
+    await User.updateOne(
+        { connection_id:myInformation.my_connection_id }, 
+        { $set: { 
+            connection : false, 
+            connection_id : null
+        } 
+    });
+    return myInformation ;
+}
+
+const checkConnection = async (myId) => {
+    const myInformation = await User.findById(myId);
+    return myInformation.connection;
+}
 export default {
     generateFriendCode,
-    connectCode
+    connectCode,
+    disconnectFriendCode
 }

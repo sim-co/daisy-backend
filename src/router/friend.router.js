@@ -1,12 +1,7 @@
 import { Router } from "express";
 import { verifyToken } from "../middleware/verifyToken";
-import User from "../../schemas/users";
-import APIError from "../util/apiError";
-import errors from "../util/errors";
-import asyncWrapper from "../util/asyncWrapper";
-import { body } from "express-validator";
 import validation from "../middleware/validation";
-import { generateMyFriendCode, FriendCodeConnect } from "../controller/friend.controller"
+import { generateMyFriendCode, FriendCodeConnect, FriendDisconnect } from "../controller/friend.controller"
 
 const router = Router();
 
@@ -64,5 +59,25 @@ router.post('/my-id', verifyToken, generateMyFriendCode);
  * 
  */
 router.post('/connect', verifyToken, FriendCodeConnect, validation);
+
+/**
+ * @swagger
+ *
+ * /friend/disconnect:
+ *  delete:
+ *    summary: "친구연결 끊기"
+ *    description: "본인 정보 검색하여 연결되어 있는 친구와의 연결 정보를 끊을 수 있다."
+ *    tags: [friend]
+ *    parameters:
+ *      - in: header
+ *        name: Authorization
+ *        description: JWT 토큰 값 (Bearer Token)
+ *        required: true
+ *        schema:
+ *          type: string
+ *    responses:
+ *       "200":
+ */
+router.delete('/disconnect', verifyToken, FriendDisconnect);
 
 export default router;

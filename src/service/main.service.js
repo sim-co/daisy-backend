@@ -4,11 +4,13 @@ import querystring from "querystring";
 import { generateAccessToken, generateRefreshToken } from "../util/jwt";
 import User from "../../schemas/users";
 import Course from '../../schemas/courses';
+import Location from '../../schemas/locations';
 
 /**
  * 데이트 코스 추가
  * @param {String} myId
  */
+
 const generateCourseService = async ({myId, courseName, courseData}) => {
     try {
         const userInfo = await User.findById(myId);
@@ -28,11 +30,44 @@ const generateCourseService = async ({myId, courseName, courseData}) => {
             course: courseData,
         });
         return course;
+
     } catch(e) {
         throw e;
     }
 }
 
+const addLocationService = async (locationName, region, locationX, locationY, category) => {
+    try { 
+        const location = await Location.create({ 
+            locationName, 
+            region, 
+            locationX, 
+            locationY, 
+            category});
+        return location.id;
+    } catch(e) {
+        throw e;
+    }
+}
+
+// const patchCourseService = async (myId, innerCourse, courseName) => {
+    
+// }
+
+const deleteCourseService = async (myId, courseId) => {
+    try{
+        const course = await Course.findByIdAndRemove({ _id: courseId, users: { $in: [myId] } });
+    } catch(error) {
+        throw new APIError(
+            errors.COURSE_DELETE_ERROR.statusCode,
+            errors.COURSE_DELETE_ERROR.errorCode,
+            errors.COURSE_DELETE_ERROR.errorMsg,
+        )
+    }
+}
+
 export default {
     generateCourseService,
+    addLocationService,
+    deleteCourseService
 }

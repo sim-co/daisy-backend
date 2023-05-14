@@ -17,4 +17,31 @@ const generateCourseInner = async (req, res) => {
     return res.status(httpStatus.OK).json({ course });
 }
 
+// 장소 생성
+/**
+ * 
+ * @param {Request} req 
+ * @param {Response} res
+ */
+const addLocationInner = async (req, res) => {
+    const { locationName, region, locationX, locationY, category } = req.body;
+    const locationCode = await mainService.addLocationService(locationName, region, locationX, locationY, category);
+    return res.status(httpStatus.OK).json({ locationCode });
+}
+
+// 코스 삭제
+/**
+ * 
+ * @param {Request} req 
+ * @param {Response} res
+ */
+const deleteCourseInner = async (req, res) => {
+    const myId = req.params.myId;
+    const courseId = req.params.courseId;
+    const locationCode = await mainService.deleteCourseService(myId, courseId);
+    return res.status(httpStatus.OK).json({ locationCode });
+}
+
 export const generateCourse = asyncWrapper(generateCourseInner);
+export const addLocation = asyncWrapper(addLocationInner);
+export const deleteCourse = asyncWrapper(deleteCourseInner);

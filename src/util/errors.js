@@ -60,8 +60,18 @@ const errors = {
     errorCode: "FRIEND_ALREADY_ADDED",
     statusCode: 400,
     errorMsg: "이미 친구추가가 진행됨"
-  }
+  },
+  FRIEND_ALREADY_DISCONNECTED: {
+    errorCode: "FRIEND_ALREADY_DISCONNECTED",
+    statusCode: 400,
+    errorMsg: "이미 친구추가가 끊어짐"
+  },
 
+  COURSE_DELETE_ERROR: {
+    errorCode: "COURSE_DELETE_ERROR",
+    statusCode: 400,
+    errorMsg: "코스가 존재하지 않거나 ID값이 일치하지않아 삭제할 수 없습니다."
+  },
 };
 
 export default errors;
