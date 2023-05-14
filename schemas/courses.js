@@ -4,18 +4,31 @@ const { Schema } = mongoose;
 const courseSchema = new Schema(
     {
         users: {
-            type:Array,
-            required: true,
-        },
-        course: {
             type: Array,
-            required: true, // null 여부 (true면 null값이 들어갈 수 없음)
-            unique: false, // 유니크 여부 (true면 값이 한개 이상 중복될 수 없음)
+            required: true,
         },
         courseName: {
             type: String,
-            default: "비어있는 이름"
-        }
+            required: false,
+        },
+        course: [{
+            shopName: {
+                type: String,
+                required: true,
+            },
+            order: {
+                type: Number,
+                required: true,
+            },
+            coordinateX: {
+                type: Number,
+                required: true,
+            },
+            coordinateY: {
+                type: Number,
+                required: true,
+            }
+        }],
     },
     {timestamps: true}
 );

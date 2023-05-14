@@ -34,7 +34,7 @@ router.post('/my-id', verifyToken, generateMyFriendCode);
 /**
  * @swagger
  *
- * /friend:
+ * /friend/connect:
  *  post:
  *    summary: "친구코드 연결"
  *    description: "상대의 친구코드를 이용하여 친구 연결을 진행할 수 있다. (친구코드가 없을 시 오류)"
@@ -58,7 +58,7 @@ router.post('/my-id', verifyToken, generateMyFriendCode);
  *                   connection_id: "ABCAB123AC"
  * 
  */
-router.post('/', verifyToken, validation, FriendCodeConnect);
+router.post('/connect', verifyToken, FriendCodeConnect, validation);
 
 /**
  * @swagger

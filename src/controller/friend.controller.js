@@ -22,6 +22,7 @@ const generateMyFriendCodeInner = async (req, res) => {
  * @param {Response} res
  */
 const FriendCodeConnectInner = async (req, res) => {
+    console.log("controller");
     const myId = res.app.user.id;
     const friendConnectionCode = req.body.friendConnectionCode;
     const userConnectCode = await friendService.connectCode({myId, friendConnectionCode});

@@ -12,7 +12,7 @@ const generateFriendCode =  async (myId) => {
         const code = await User.findByIdAndUpdate(myId, {
             my_connection_id : friendCode
         });
-        return code
+        return friendCode
     } catch(error) {
         throw new APIError(
             errors.FRIEND_CODE_CREATE_ERROR.statusCode,
@@ -51,6 +51,7 @@ const connectCode = async ({myId, friendConnectionCode}) => {
             connection : true,
             connection_id : my_db.my_connection_id
         });
+        return "친구 코드가 연결되었습니다."
     } catch(error) {
         throw new APIError(
            errors.FRIEND_CODE_ERROR.statusCode,

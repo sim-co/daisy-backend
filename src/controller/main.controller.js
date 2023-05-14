@@ -11,9 +11,10 @@ import { Request, Response } from "express";
  */
 const generateCourseInner = async (req, res) => {
     const myId = res.app.user.id;
-    const { innerCourse, courseName } = req.body;
-    const courseCode = await mainService.generateCourseService(myId, innerCourse, courseName);
-    return res.status(httpStatus.OK).json({ courseCode });
+    const courseName = req.body.courseName;
+    const courseData = req.body.course;
+    const course = await mainService.generateCourseService({myId, courseName, courseData});
+    return res.status(httpStatus.OK).json({ course });
 }
 
 // 장소 생성
