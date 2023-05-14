@@ -7,7 +7,7 @@ const router = Router();
 /**
  * @swagger
  * tags:
- *   name: 데이트 코스
+ *   name: main
  *   description: 메인화면
 */
 
