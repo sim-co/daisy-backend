@@ -47,7 +47,13 @@ const showDataInner = async (req, res) => {
   return res.status(httpStatus.OK).json({userData});
 }
 
+const showFriendDataInner = async (req, res) => {
+  const { friendCode } = req.body;
+  const friendData = await clientService.showFriendData(friendCode);
+  return res.status(httpStatus.OK).json({friendData});
+}
 export const callBackRedirect = callBackRedirectInner;
 export const addData = asyncWrapper(addDataInner);
 export const updateData = asyncWrapper(updateDataInner);
 export const showData = asyncWrapper(showDataInner);
+export const showFriendData = asyncWrapper(showFriendDataInner);

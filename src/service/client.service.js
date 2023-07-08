@@ -70,13 +70,20 @@ const userUdpate = async (myId, body) => {
 }
 
 const showData = async (myId) => {
-  const showData = await User.findById(myId)
-  return showData;
+  const myData = await User.findById(myId);
+  return myData;
+}
+
+const showFriendData = async (friendCode) => {
+  const friendInfo = await User.findOne({my_connection_id: friendCode});
+  const friendData = await User.findById(friendInfo.id);
+  return friendData;
 }
 
 export default {
     generateQueryService,
     loginLogAddData,
     userUdpate,
-    showData
+    showData,
+    showFriendData
 }

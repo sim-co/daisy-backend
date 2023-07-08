@@ -1,7 +1,7 @@
 import client from "./client.service";
 import friend from "./friend.service";
-import main from './main.service';
+import course from './course.service';
 
 export const friendService = friend;
 export const clientService = client;
-export const mainService = main;
+export const courseService = course;

@@ -6,7 +6,7 @@ import httpStatus, { NO_CONTENT } from "http-status";
 import asyncWrapper from "../util/asyncWrapper";
 import validation from "../middleware/validation";
 import { reissueTK } from "../util/reissueTK";
-import { callBackRedirect, addData, updateData, showData } from "../controller/client.controller";
+import { callBackRedirect, addData, updateData, showData, showFriendData } from "../controller/client.controller";
 
 const router = Router();
 
@@ -334,5 +334,114 @@ router.patch("/update-data", verifyToken, updateData);
  *         name: Authorization  # 요청 헤더에 Authorization 필드에 토큰을 추가
  */
 router.get("/show-data", verifyToken, showData);
+
+/**
+ * @swagger
+ *
+ * /client/show-friend-data:
+ *   get:
+ *     summary: "친구 정보 조회"
+ *     description: "친구 정보 조회 API"
+ *     tags: [client]
+ *     security:
+ *       - verifyToken: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               friendCode:
+ *                 type: string
+ *                 description: 친구 코드
+ *     responses:
+ *       '200':
+ *         description: OK
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 _id:
+ *                   type: string
+ *                   description: 사용자 아이디
+ *                 email:
+ *                   type: string
+ *                   description: 사용자 이메일
+ *                 snsNickName:
+ *                   type: string
+ *                   description: 간편 로그인 사용자 닉네임
+ *                 snsId:
+ *                   type: string
+ *                   description: 간편 로그인시 등록되는 snsID
+ *                 provider:
+ *                   type: string
+ *                   description: 간편 로그인 등록 사이트
+ *                 loginLog:
+ *                   type: string
+ *                   description: 개인정보 등록 여부
+ *                 connection:
+ *                   type: string
+ *                   description: 친구 등록 여부
+ *                 birthDay:
+ *                   type: string
+ *                   format: date
+ *                   description: 사용자 생년월일 (YYYY-MM-DD)
+ *                 gender:
+ *                   type: string
+ *                   description: 성별 (male, female)
+ *                 local:
+ *                   type: string
+ *                   description: 거주지
+ *                 nickName:
+ *                   type: string
+ *                   description: 사용자 닉네임
+ *       '404':
+ *         description: Not Found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 errorCode:
+ *                   type: string
+ *                   description: 클라이언트가 존재하지 않을 때의 에러 코드
+ *                 errorMessage:
+ *                   type: string
+ *                   description: 클라이언트가 존재하지 않을 때의 에러 메시지
+ *       '401':
+ *         description: UnAuthorized
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 errorCode:
+ *                   type: string
+ *                   description: UnAuthorized
+ *                 errorMessage:
+ *                   type: string
+ *                   description: UnAuthorized
+ *       '500':
+ *         description: Internal Server Error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 errorCode:
+ *                   type: string
+ *                   description: 사용자 정보를 업데이트하는 과정에서 오류가 발생했을 때의 에러 코드
+ *                 errorMessage:
+ *                   type: string
+ *                   description: 사용자 정보를 업데이트하는 과정에서 오류가 발생했을 때의 에러 메시지
+ *     securitySchemes:
+ *       verifyToken:
+ *         type: apiKey
+ *         in: header
+ *         name: Authorization  # 요청 헤더에 Authorization 필드에 토큰을 추가
+ */
+router.get("/show-friend-data", verifyToken, showFriendData);
 
 export default router;

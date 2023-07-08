@@ -23,11 +23,58 @@ const generateCourseService = async ({myId, courseName, courseData}) => {
             const friendInfo = await User.findOne({ my_connection_id: userInfo.connection_id})
             courseUserList.push(friendInfo.id);
         }
+        
         const course = await Course.create({
             users: courseUserList,
             courseName: courseName,
             course: courseData,
         });
+        return course;
+
+    } catch(e) {
+        throw e;
+    }
+}
+
+const viewCourseService = async ({myId}) => {
+    try {
+        const userInfo = await User.findById(myId);
+
+        let courseUserList = [];
+        courseUserList.push(userInfo.id);
+            
+        // 친구 동기화
+        if (userInfo.connection === true) {
+            const friendInfo = await User.findOne({ my_connection_id: userInfo.connection_id})
+            courseUserList.push(friendInfo.id);
+        }
+
+        const course = await Course.findById(myId);
+        return course;
+
+    } catch(e) {
+        throw e;
+    }
+}
+
+const modifyCourseService = async ({myId, courseName, courseData}) => {
+    try {
+        const userInfo = await User.findById(myId);
+        
+        let courseUserList = [];
+        courseUserList.push(userInfo.id);
+            
+        // 친구 동기화
+        if (userInfo.connection === true) {
+            const friendInfo = await User.findOne({ my_connection_id: userInfo.connection_id})
+            courseUserList.push(friendInfo.id);
+        }
+
+        const course = await Course.findById(courseId);
+        course.users = courseUserList;
+        course.courseName = courseName;
+        course.course = courseData;
+        await course.save();
         return course;
 
     } catch(e) {
@@ -49,5 +96,7 @@ const deleteCourseService = async (myId, courseId) => {
 
 export default {
     generateCourseService,
-    deleteCourseService
+    deleteCourseService,
+    modifyCourseService,
+    viewCourseService
 }
