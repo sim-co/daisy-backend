@@ -7,7 +7,7 @@ import User from "../../schemas/users";
  * @param {Stirng} myId
  */
 const generateFriendCode =  async (myId) => {
-    const friendCode = Math.random().toString(36).substring(2, 10).toUpperCase();
+    const friendCode = Math.random().toString(36).substring(2, 13).toUpperCase();
     try {
         const code = await User.findByIdAndUpdate(myId, {
             my_connection_id : friendCode
@@ -84,11 +84,33 @@ const disconnectFriendCode = async (myId) => {
 }
 
 const checkConnection = async (myId) => {
+    if (!await checkConnection(myId)) {
+        throw new APIError(
+            errors.FRIEND_ALREADY_DISCONNECTED.statusCode,
+            errors.FRIEND_ALREADY_DISCONNECTED.errorCode,
+            errors.FRIEND_ALREADY_DISCONNECTED.errorMsg,
+        )
+    }
     const myInformation = await User.findById(myId);
     return myInformation.connection;
 }
+
+const showMyFriendCode = async (myId) => {
+    if (!await checkConnection(myId)) {
+        throw new APIError(
+            errors.CLIENT_NOT_EXISTS.statusCode,
+            errors.CLIENT_NOT_EXISTS.errorCode,
+            errors.CLIENT_NOT_EXISTS.errorMsg,
+        )
+    }
+    const myInformation = await User.findById(myId);
+    const friendInfo = await User.findOne({connection_id:myInformation.my_connection_id})
+    return friendInfo.nickName;
+}
+
 export default {
     generateFriendCode,
     connectCode,
-    disconnectFriendCode
+    disconnectFriendCode,
+    showMyFriendCode
 }

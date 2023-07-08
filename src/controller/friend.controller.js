@@ -41,6 +41,15 @@ const FriendDisconnectInner = async (req, res) => {
     return res.status(httpStatus.OK).json({ message: '친구 연결이 끊어졌습니다.'});
 }
 
+// 내 친구가 누군지 알려주는 API
+const showMyFriendInner = async (req, res) => {
+    const myId = res.app.user.id;
+    const friendName = await friendService.showMyFriendCode(myId);
+    return res.status(httpStatus.OK).json({ friendName });
+}
+
+
 export const generateMyFriendCode = asyncWrapper(generateMyFriendCodeInner);
 export const FriendCodeConnect = asyncWrapper(FriendCodeConnectInner);
 export const FriendDisconnect = asyncWrapper(FriendDisconnectInner);
+export const showMyFriend = asyncWrapper(showMyFriendInner);

@@ -6,7 +6,9 @@ import {
     deleteCourse,
     modifyCourse,
     viewCourse, 
-    searchLocation} from '../controller/course.controller';
+    searchLocation,
+    getPlacesInLatLngRange,
+    registLocation} from '../controller/course.controller';
 
 const router = Router();
 
@@ -156,7 +158,7 @@ router.patch('/modify-course', verifyToken, modifyCourse);
  *       200:
  *         description: OK
  */
-router.delete('/del-course/:myId/:courseId', verifyToken, deleteCourse);
+router.delete('/del-course/:courseId', verifyToken, deleteCourse);
 
 router.get('/view-course', verifyToken, viewCourse);
 
@@ -164,5 +166,8 @@ router.post('/add-location', verifyToken, addLocation);
 
 router.get('/search-location', verifyToken, searchLocation);
 
-// router.get('/search'.verifyToken, ser)
+router.get('/get-places-inlat-lng-range', verifyToken, getPlacesInLatLngRange);
+
+router.post('/regist-location', verifyToken, registLocation);
+
 export default router;

@@ -2,7 +2,6 @@ import asyncWrapper from "../util/asyncWrapper";
 import httpStatus from "http-status";
 import { clientService } from "../service";
 import { Request, Response } from "express";
-import req from "express/lib/request";
 
 // 간편로그인 리다이렉트
 /**
@@ -52,8 +51,16 @@ const showFriendDataInner = async (req, res) => {
   const friendData = await clientService.showFriendData(friendCode);
   return res.status(httpStatus.OK).json({friendData});
 }
+
+const deactivateUserInfoInner = async (req, res) => {
+  const myId = res.app.user.id;
+  const deldata = await clientService.deactivateUserInfo(myId);
+  return res.status(httpStatus.OK).json({deldata});
+}
+
 export const callBackRedirect = callBackRedirectInner;
 export const addData = asyncWrapper(addDataInner);
 export const updateData = asyncWrapper(updateDataInner);
 export const showData = asyncWrapper(showDataInner);
 export const showFriendData = asyncWrapper(showFriendDataInner);
+export const deactivateUserInfo = asyncWrapper(deactivateUserInfoInner);

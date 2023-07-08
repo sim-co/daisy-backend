@@ -12,9 +12,17 @@ const courseSchema = new Schema(
             required: false,
         },
         course: [{
-            placeId: {
-                type: Types.ObjectId,
-                required: true
+            shopName: {
+                type: String,
+                required: true,
+            },
+            coordinateX: {
+                type: Number,
+                required: true,
+            },
+            coordinateY: {
+                type: Number,
+                required: true,
             },
 
             order: {

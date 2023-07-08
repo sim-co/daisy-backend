@@ -76,8 +76,18 @@ const showData = async (myId) => {
 
 const showFriendData = async (friendCode) => {
   const friendInfo = await User.findOne({my_connection_id: friendCode});
-  const friendData = await User.findById(friendInfo.id);
-  return friendData;
+  // const friendData = await User.findById(friendInfo.id);
+  return friendInfo;
+}
+
+const deactivateUserInfo = async (myId) => {
+  try {
+    const datadel = await User.deleteOne({ _id: myId });
+    console.log(datadel);
+    return datadel;
+  } catch (error) {
+    console.error(error);
+  }
 }
 
 export default {
@@ -85,5 +95,6 @@ export default {
     loginLogAddData,
     userUdpate,
     showData,
-    showFriendData
+    showFriendData,
+    deactivateUserInfo
 }

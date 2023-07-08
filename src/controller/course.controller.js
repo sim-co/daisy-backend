@@ -50,7 +50,8 @@ const modifyCourseInner = async (req, res) => {
  * @param {Response} res
 */
 const deleteCourseInner = async (req, res) => {
-    const myId = req.params.myId;
+    // const myId = req.params.myId;
+    const myId = res.app.user.id;
     const courseId = req.params.courseId;
     const locationCode = await courseService.deleteCourseService(myId, courseId);
     return res.status(httpStatus.OK).json({ locationCode });
@@ -76,8 +77,20 @@ const searchLocationInner = async (req, res) => {
     return res.status(httpStatus.OK).json({ locationCoordinate });
 }
 
-// 위, 경도 범위에 따라 해당 범위 내부에 있는 장소들을 가져오는 API
 
+// 위, 경도 범위에 따라 해당 범위 내부에 있는 장소들을 가져오는 API
+const getPlacesInLatLngRangeInner = async (req, res) => {
+    const { coordinateX1, coordinateY1, coordinateX2, coordinateY2 } = req.body;
+    const locations = await courseService.getPlacesInLatLngRangeService(coordinateX1, coordinateY1, coordinateX2, coordinateY2);
+    return res.status(httpStatus.OK).json({ locations });
+} 
+
+// 장소 등록 API(임의등록)
+const registLocationInner = async (req, res) => {
+    const { shopName, coordinateX, coordinateY } = req.body;
+    const location = await courseService.registLocationService(shopName, coordinateX, coordinateY);
+    return res.status(httpStatus.OK).json({ location });
+}
 
 
 export const generateCourse = asyncWrapper(generateCourseInner);
@@ -85,4 +98,6 @@ export const addLocation = asyncWrapper(addLocationInner);
 export const deleteCourse = asyncWrapper(deleteCourseInner);
 export const modifyCourse = asyncWrapper(modifyCourseInner);
 export const viewCourse = asyncWrapper(viewCourseInner);
+export const getPlacesInLatLngRange = asyncWrapper(getPlacesInLatLngRangeInner);
 export const searchLocation = asyncWrapper(searchLocationInner);
+export const registLocation = asyncWrapper(registLocationInner);

@@ -55,6 +55,7 @@ app.use(router);
 
 app.use((err, req, res, next) => {
   const { statusCode, errorCode, errorMsg } = err
+  console.log(err);
   res.status(statusCode)
   res.json(err)
 });

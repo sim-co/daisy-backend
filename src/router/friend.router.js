@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { verifyToken } from "../middleware/verifyToken";
 import validation from "../middleware/validation";
-import { generateMyFriendCode, FriendCodeConnect, FriendDisconnect } from "../controller/friend.controller"
+import { generateMyFriendCode, FriendCodeConnect, FriendDisconnect, showMyFriend } from "../controller/friend.controller"
 
 const router = Router();
 
@@ -80,4 +80,5 @@ router.post('/connect', verifyToken, FriendCodeConnect, validation);
  */
 router.delete('/disconnect', verifyToken, FriendDisconnect);
 
+router.get('/show-friend-name',verifyToken, showMyFriend);
 export default router;

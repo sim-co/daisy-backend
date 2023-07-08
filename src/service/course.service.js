@@ -1,10 +1,9 @@
 import APIError from "../util/apiError";
 import errors from "../util/errors";
 import querystring from "querystring";
-import { generateAccessToken, generateRefreshToken } from "../util/jwt";
 import User from "../../schemas/users";
 import Course from '../../schemas/courses';
-import { NOTFOUND } from "dns";
+import Place from "../../schemas/places";
 
 /**
  * 데이트 코스 추가
@@ -37,10 +36,11 @@ const generateCourseService = async ({myId, courseName, courseData}) => {
     }
 }
 
-const viewCourseService = async ({myId}) => {
-    try {
+const viewCourseService = async (myId) => {
+    // try {
         const userInfo = await User.findById(myId);
 
+        console.log("hi",userInfo);
         let courseUserList = [];
         courseUserList.push(userInfo.id);
             
@@ -49,13 +49,14 @@ const viewCourseService = async ({myId}) => {
             const friendInfo = await User.findOne({ my_connection_id: userInfo.connection_id})
             courseUserList.push(friendInfo.id);
         }
-
-        const course = await Course.findById(myId);
+        
+        const course = await Course.findOne({users : myId});
+        console.log(course);
         return course;
 
-    } catch(e) {
-        throw e;
-    }
+    // } catch(e) {
+    //     throw e;
+    // }
 }
 
 const modifyCourseService = async ({myId, courseName, courseData}) => {
@@ -71,7 +72,7 @@ const modifyCourseService = async ({myId, courseName, courseData}) => {
             courseUserList.push(friendInfo.id);
         }
 
-        const course = await Course.findById(courseId);
+        const course = await Course.findOne({users : myId});
         course.users = courseUserList;
         course.courseName = courseName;
         course.course = courseData;
@@ -84,20 +85,22 @@ const modifyCourseService = async ({myId, courseName, courseData}) => {
 }
 
 const deleteCourseService = async (myId, courseId) => {
-    try{
-        const course = await Course.findByIdAndRemove({ _id: courseId, users: { $in: [myId] } });
-    } catch(error) {
-        throw new APIError(
-            errors.COURSE_DELETE_ERROR.statusCode,
-            errors.COURSE_DELETE_ERROR.errorCode,
-            errors.COURSE_DELETE_ERROR.errorMsg,
-        )
-    }
+        if(!await Course.findOne({users : myId})) {
+            throw new APIError(
+                errors.COURSE_DELETE_ERROR.statusCode,
+                errors.COURSE_DELETE_ERROR.errorCode,
+                errors.COURSE_DELETE_ERROR.errorMsg,
+            )
+        };
+        const course = await Course.deleteOne({ _id: courseId });
+        console.log(course);
+        return course;
 }
 
 const searchLocationService = async (locationId) => {
     try{
-        const coordiante = await Course.findById(locationId);
+        const coordinate = await Place.findById(locationId);
+        return coordinate;
     } catch(error) {
         throw new APIError(
             errors.LOCATION_NOTFOUND_ERROR.statusCode,
@@ -107,10 +110,34 @@ const searchLocationService = async (locationId) => {
     }
 }
 
+const getPlacesInLatLngRangeService = async (coordinateX1, coordinateY1, coordinateX2, coordinateY2) => {
+    // 범위 내 검색
+    const locations = Place.find({
+      coordinateX: { $gte: coordinateX2, $lte: coordinateX1 },
+      coordinateY: { $gte: coordinateY2, $lte: coordinateY1 }
+    })
+    return locations;
+}
+
+const registLocationService = async (shopName, coordinateX, coordinateY) => {
+    try{
+        const location = await Place.create({
+            shopName, 
+            coordinateX, 
+            coordinateY
+        });
+        return location;
+    } catch(error) {
+
+    }
+}
+
 export default {
     generateCourseService,
     deleteCourseService,
     modifyCourseService,
     viewCourseService,
-    searchLocationService
+    searchLocationService,
+    getPlacesInLatLngRangeService,
+    registLocationService
 }
