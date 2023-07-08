@@ -5,10 +5,11 @@ import passport from "passport";
 import passportConfig from "./passport";
 import session from "express-session";
 import connect from "../schemas";
- 
+
 const app = express();
 dotenv.config();
 const port = process.env.PORT;
+
 
 // 몽고 디비 연결
 connect(); 

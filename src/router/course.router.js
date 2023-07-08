@@ -5,7 +5,8 @@ import {
     addLocation,
     deleteCourse,
     modifyCourse,
-    viewCourse } from '../controller/course.controller';
+    viewCourse, 
+    searchLocation} from '../controller/course.controller';
 
 const router = Router();
 
@@ -157,11 +158,11 @@ router.patch('/modify-course', verifyToken, modifyCourse);
  */
 router.delete('/del-course/:myId/:courseId', verifyToken, deleteCourse);
 
-
 router.get('/view-course', verifyToken, viewCourse);
-
-
 
 router.post('/add-location', verifyToken, addLocation);
 
+router.get('/search-location', verifyToken, searchLocation);
+
+// router.get('/search'.verifyToken, ser)
 export default router;

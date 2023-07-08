@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-const { Schema, Types } = mongoose;
+const { Schema } = mongoose;
 
 const placeSchema = new Schema(
     {
@@ -15,8 +15,11 @@ const placeSchema = new Schema(
             type: Number,
             required: true,
         }
+    },
+    {
+        timestamps: true
     }
 );
 
-const Place = mongoose.model('Places', placeSchema);
+const Place = mongoose.model('Place', placeSchema);
 export default Place

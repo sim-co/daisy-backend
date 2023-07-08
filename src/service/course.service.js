@@ -4,6 +4,7 @@ import querystring from "querystring";
 import { generateAccessToken, generateRefreshToken } from "../util/jwt";
 import User from "../../schemas/users";
 import Course from '../../schemas/courses';
+import { NOTFOUND } from "dns";
 
 /**
  * 데이트 코스 추가
@@ -94,9 +95,22 @@ const deleteCourseService = async (myId, courseId) => {
     }
 }
 
+const searchLocationService = async (locationId) => {
+    try{
+        const coordiante = await Course.findById(locationId);
+    } catch(error) {
+        throw new APIError(
+            errors.LOCATION_NOTFOUND_ERROR.statusCode,
+            errors.LOCATION_NOTFOUND_ERROR.errorCode,
+            errors.LOCATION_NOTFOUND_ERROR.errorMsg,
+        )
+    }
+}
+
 export default {
     generateCourseService,
     deleteCourseService,
     modifyCourseService,
-    viewCourseService
+    viewCourseService,
+    searchLocationService
 }

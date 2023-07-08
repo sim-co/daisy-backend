@@ -69,8 +69,20 @@ const addLocationInner = async (req, res) => {
     return res.status(httpStatus.OK).json({ locationCode });
 }
 
+// 장소 검색 API
+const searchLocationInner = async (req, res) => {
+    const { locationId } = req.body;
+    const locationCoordinate = await courseService.searchLocationService(locationId);
+    return res.status(httpStatus.OK).json({ locationCoordinate });
+}
+
+// 위, 경도 범위에 따라 해당 범위 내부에 있는 장소들을 가져오는 API
+
+
+
 export const generateCourse = asyncWrapper(generateCourseInner);
 export const addLocation = asyncWrapper(addLocationInner);
 export const deleteCourse = asyncWrapper(deleteCourseInner);
 export const modifyCourse = asyncWrapper(modifyCourseInner);
 export const viewCourse = asyncWrapper(viewCourseInner);
+export const searchLocation = asyncWrapper(searchLocationInner);

@@ -4,6 +4,12 @@ const errors = {
     statusCode: 400,
   },
 
+  LOCATION_NOTFOUND_ERROR: {
+    errorCode: "LOCATION_NOTFOUND_ERROR",
+    statusCode: 404,
+    errorMsg: "존재하지 않는 장소입니다."
+  },
+
   CLIENT_NOT_EXISTS: {
     errorCode: "CLIENT_NOT_EXISTS",
     statusCode: 404,
