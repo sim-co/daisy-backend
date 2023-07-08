@@ -4,7 +4,7 @@ import dotenv from "dotenv";
 dotenv.config();
 
 // 기본 요청 url : mongodb://localhost:27017/admin
-const dbUrl = "mongodb+srv://root:"+process.env.MONGOADOMIN+"@daisydb.h7qsvuz.mongodb.net/?retryWrites=true&w=majority"
+const dbUrl = "mongodb+srv://root:"+process.env.MONGOADMIN+"@daisydb.h7qsvuz.mongodb.net/?retryWrites=true&w=majority"
 
 // 몽구스 연결 함수
 const connect = () => {
