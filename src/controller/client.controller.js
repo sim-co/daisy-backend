@@ -2,6 +2,7 @@ import asyncWrapper from "../util/asyncWrapper";
 import httpStatus from "http-status";
 import { clientService } from "../service";
 import { Request, Response } from "express";
+import req from "express/lib/request";
 
 // 간편로그인 리다이렉트
 /**
@@ -40,7 +41,13 @@ const updateDataInner = async (req, res) => {
   return res.status(httpStatus.OK).json({ userUpdateData })
 }
 
+const showDataInner = async (req, res) => {
+  const myId = res.app.user.id;
+  const userData = await clientService.showData(myId);
+  return res.status(httpStatus.OK).json({userData});
+}
+
 export const callBackRedirect = callBackRedirectInner;
 export const addData = asyncWrapper(addDataInner);
 export const updateData = asyncWrapper(updateDataInner);
-
+export const showData = asyncWrapper(showDataInner);

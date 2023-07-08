@@ -75,5 +75,5 @@ const userSchema = new Schema({
     unique: false,
   },
 });
-const data = mongoose.model('User', userSchema);
-export default data
+const User = mongoose.model('User', userSchema);
+export default User

@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-const { Schema } = mongoose;
+const { Schema, Types } = mongoose;
  
 const courseSchema = new Schema(
     {
@@ -12,25 +12,20 @@ const courseSchema = new Schema(
             required: false,
         },
         course: [{
-            shopName: {
-                type: String,
-                required: true,
+            placeId: {
+                type: Types.ObjectId,
+                required: true
             },
+
             order: {
                 type: Number,
-                required: true,
-            },
-            coordinateX: {
-                type: Number,
-                required: true,
-            },
-            coordinateY: {
-                type: Number,
-                required: true,
+                required: true
             }
         }],
     },
-    {timestamps: true}
+    {
+        timestamps: true
+    }
 );
-const data = mongoose.model('Courses', courseSchema);
-export default data
+const Course = mongoose.model('Course', courseSchema);
+export default Course

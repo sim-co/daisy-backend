@@ -68,8 +68,15 @@ const userUdpate = async (myId, body) => {
   })
   return updatedUser;
 }
+
+const showData = async (myId) => {
+  const showData = await User.findById(myId)
+  return showData;
+}
+
 export default {
     generateQueryService,
     loginLogAddData,
-    userUdpate
+    userUdpate,
+    showData
 }
