@@ -12,7 +12,6 @@ import { callBackRedirect,
          showData,
          showFriendData,
          deactivateUserInfo,
-         uploadProfile, 
          uploadProfileCode} from "../controller/client.controller";
 
 const router = Router();

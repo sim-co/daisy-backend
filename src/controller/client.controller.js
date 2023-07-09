@@ -91,3 +91,4 @@ export const updateData = asyncWrapper(updateDataInner);
 export const showData = asyncWrapper(showDataInner);
 export const showFriendData = asyncWrapper(showFriendDataInner);
 export const deactivateUserInfo = asyncWrapper(deactivateUserInfoInner);
+export const uploadProfileCode = asyncWrapper(uploadProfileInner);
