@@ -71,6 +71,13 @@ const userUdpate = async (myId, body) => {
 
 const showData = async (myId) => {
   const myData = await User.findById(myId);
+  if(!myData) {
+    throw new APIError(
+      errors.CLIENT_NOT_EXISTS.statusCode,
+      errors.CLIENT_NOT_EXISTS.errorCode,
+      errors.CLIENT_NOT_EXISTS.errorMsg,
+    )
+  }
   return myData;
 }
 

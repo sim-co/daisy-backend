@@ -39,6 +39,14 @@ export function verifyToken(req, res, next) {
           errors.TOKEN_EXPIRED.errorMsg
         );
       }
+      if (error.name === "JsonWebTokenError") {
+        // 잘못된 토큰
+        throw new APIError(
+          errors.TOKEN_EXPIRED.statusCode,
+          errors.TOKEN_EXPIRED.errorCode,
+          errors.TOKEN_EXPIRED.errorMsg
+        );
+      }
     }
   };
   asyncWrapper(origin)(req, res, next);
