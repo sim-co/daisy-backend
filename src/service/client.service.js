@@ -31,7 +31,7 @@ const generateQueryService = (userId) => {
  * @param {String} local 
  * @param {String} birthDay 
  */
-const loginLogAddData = async ({ userId, nickName, gender, local, birthDay }) => {
+const loginLogAddData = async ({ userId, nickName, gender, local, birthDay, imgName }) => {
     try {
         const user = await User.findOneAndUpdate({_id: userId, loginLog: false}, {
           nickName: nickName,
@@ -39,6 +39,7 @@ const loginLogAddData = async ({ userId, nickName, gender, local, birthDay }) =>
           local: local,
           birthDay: birthDay,
           loginLog: true,
+          imgName: imgName
         }, {new: true});
         
         if (!user) {
@@ -65,13 +66,22 @@ const loginLogAddData = async ({ userId, nickName, gender, local, birthDay }) =>
  * 유저 업데이트 - 서비스
  */
 const userUdpate = async (myId, body) => {
-  const { nickName, gender, local, birthDay } = body;
-  const updatedUser = await User.findByIdAndUpdate(myId, {
-    nickName,
-    gender,
-    local,
-    birthDay
-  })
+  try {
+    const { nickName, gender, local, birthDay, imgName } = body;
+    const updatedUser = await User.findByIdAndUpdate(myId, {
+      nickName,
+      gender,
+      local,
+      birthDay,
+      imgName
+    })
+  } catch (error) {
+    throw new APIError(
+      errors.CANT_UPDATE_USER_INFORMATION.statusCode,
+      errors.CANT_UPDATE_USER_INFORMATION.errorCode,
+      errors.CANT_UPDATE_USER_INFORMATION.errorMsg
+    )
+  }
   return updatedUser;
 }
 
@@ -94,9 +104,16 @@ const showData = async (myId) => {
  * 친구 보여주기 - 서비스
  */
 const showFriendData = async (friendCode) => {
-  const friendInfo = await User.findOne({my_connection_id: friendCode});
-  // const friendData = await User.findById(friendInfo.id);
-  return friendInfo;
+  try {
+    const friendInfo = await User.findOne({my_connection_id: friendCode});
+    return friendInfo;
+  } catch(error) {
+    throw new APIError(
+      errors.CLIENT_NOT_EXISTS.statusCode,
+      errors.CLIENT_NOT_EXISTS.errorCode,
+      errors.CLIENT_NOT_EXISTS.errorMsg,
+    )
+  }
 }
 
 /**
@@ -122,7 +139,6 @@ const uploadProfileCode = async () => {
     region: process.env.S3_REGION
   });
   const filename = Date.now() + '-' + Math.random().toString(36).substring(2, 7).toUpperCase();
-  console.log(filename);
   const params = {
     Bucket: process.env.S3_BUCKET_NAME,
     Key: filename,
@@ -130,14 +146,45 @@ const uploadProfileCode = async () => {
   };
 
   try {
-    const signedUrlPut = await s3.getSignedUrlPromise("putObject", params);
-    return signedUrlPut;
+    return {
+      "url" : await s3.getSignedUrlPromise("putObject", params),
+      "filename" : filename
+    };
   } catch(error) {
     console.log(error);
     throw new APIError(
       errors.FILE_UPLOAD_ERROR.statusCode,
       errors.FILE_UPLOAD_ERROR.errorCode,
       errors.FILE_UPLOAD_ERROR.errorMsg
+    )
+  } 
+}
+
+/**
+ * 이미지 다운로드 - 서비스
+ */
+const downloadProfileCode = async (filename) => {
+  const s3 = new AWS.S3({
+    accessKeyId: process.env.S3_ACCESS_KEY,
+    secretAccessKey: process.env.S3_SECRET_ACCESS_KEY,
+    region: process.env.S3_REGION
+  });
+
+  const params = {
+    Bucket: process.env.S3_BUCKET_NAME,
+    Key: filename,
+    Expires: 60*60*3,
+  };
+  
+  try {
+    const url = await s3.getSignedUrlPromise("getObject", params);
+    return url
+  } catch(error) {
+    console.log(error);
+    throw new APIError(
+      errors.FILE_DOWNLOAD_ERROR.statusCode,
+      errors.FILE_DOWNLOAD_ERROR.errorCode,
+      errors.FILE_DOWNLOAD_ERROR.errorMsg
     )
   } 
 }
@@ -149,5 +196,6 @@ export default {
     showData,
     showFriendData,
     deactivateUserInfo,
-    uploadProfileCode
+    uploadProfileCode,
+    downloadProfileCode
 }

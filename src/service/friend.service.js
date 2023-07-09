@@ -68,13 +68,8 @@ const connectCode = async ({myId, friendConnectionCode}) => {
  * 친구 코드 끊기 - 서비스
  */
 const disconnectFriendCode = async (myId) => {
-    if (!await checkConnection(myId)) {
-        throw new APIError(
-            errors.FRIEND_ALREADY_DISCONNECTED.statusCode,
-            errors.FRIEND_ALREADY_DISCONNECTED.errorCode,
-            errors.FRIEND_ALREADY_DISCONNECTED.errorMsg,
-        )
-    }
+    
+    await checkConnection(myId);
     const myInformation = await User.findByIdAndUpdate(myId, {
         connection : false,
         connection_id : null
@@ -93,28 +88,23 @@ const disconnectFriendCode = async (myId) => {
  * 친구연결 확인 - 서비스
  */
 const checkConnection = async (myId) => {
-    if (!await checkConnection(myId)) {
+    try {
+        const myInformation = await User.findById(myId);
+        return myInformation.connection;
+    } catch(error) {
         throw new APIError(
             errors.FRIEND_ALREADY_DISCONNECTED.statusCode,
             errors.FRIEND_ALREADY_DISCONNECTED.errorCode,
             errors.FRIEND_ALREADY_DISCONNECTED.errorMsg,
         )
     }
-    const myInformation = await User.findById(myId);
-    return myInformation.connection;
 }
 
 /**
  * 친구코드 확인 - 서비스
  */
 const showMyFriendCode = async (myId) => {
-    if (!await checkConnection(myId)) {
-        throw new APIError(
-            errors.CLIENT_NOT_EXISTS.statusCode,
-            errors.CLIENT_NOT_EXISTS.errorCode,
-            errors.CLIENT_NOT_EXISTS.errorMsg,
-        )
-    }
+    await checkConnection(myId);
     const myInformation = await User.findById(myId);
     const friendInfo = await User.findOne({connection_id:myInformation.my_connection_id})
     return friendInfo.nickName;

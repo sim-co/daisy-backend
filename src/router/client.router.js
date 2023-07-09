@@ -12,7 +12,9 @@ import { callBackRedirect,
          showData,
          showFriendData,
          deactivateUserInfo,
-         uploadProfileCode} from "../controller/client.controller";
+         uploadProfileCode,
+        downloadProfileCode} from "../controller/client.controller";
+import { download } from "express/lib/response";
 
 const router = Router();
 
@@ -146,6 +148,9 @@ router.post(
  *                 type: string
  *                 format: date
  *                 description: 사용자 생년월일 (YYYY-MM-DD)
+ *               imgUrl:
+ *                 type: string
+ *                 description: img파일
  *     responses:
  *       '200':
  *         description: OK
@@ -372,7 +377,7 @@ router.get("/show-friend-data", verifyToken, showFriendData);
  *     security:
  *       - verifyToken: []
  *     requestBody:
- *       required: true
+ *       required: false
  *       content:
  *         application/json:
  *           schema:
@@ -384,7 +389,77 @@ router.get("/show-friend-data", verifyToken, showFriendData);
  */
 router.delete("/deactivate", verifyToken, deactivateUserInfo);
 
+/**
+ * @swagger
+ *
+ * /client/deactivate:
+ *   post:
+ *     summary: "이미지 업로드"
+ *     description: "이미지 업로드 API"
+ *     tags: [client]
+ *     security:
+ *       - verifyToken: []
+ *     requestBody:
+ *       required: false
+ *     responses:
+ *       '200':
+ *         description: OK
+ *       '400':
+ *         description: FILE_UPLOAD_ERROR
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 errorCode:
+ *                   type: string
+ *                   description: 업데이트 실패 시 에러 메시지
+ *                 errorMessage:
+ *                   type: string
+ *                   description: 업데이트 실패 시 에러 메시지
+ */
 router.post("/profile-upload", verifyToken, uploadProfileCode);
 
+/**
+ * @swagger
+ *
+ * /client/profile-download:
+ *   get:
+ *     summary: "프로필 코드 다운로드"
+ *     description: "프로필 코드 다운로드 API"
+ *     tags: [client]
+ *     security:
+ *       - verifyToken: []
+ *     parameters:
+ *       - in: query
+ *         name: filename
+ *         description: 파일 이름
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       '200':
+ *         description: OK
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: string
+ *               format: uri
+ *       '400':
+ *         description: 파일 다운로드 에러
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 errorCode:
+ *                   type: string
+ *                   description: 에러 코드
+ *                 errorMessage:
+ *                   type: string
+ *                   description: 에러 메시지
+ */
+
+router.get("/profile-download", verifyToken, downloadProfileCode);
 
 export default router;

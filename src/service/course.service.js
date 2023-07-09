@@ -130,6 +130,13 @@ const getPlacesInLatLngRangeService = async (coordinateX1, coordinateY1, coordin
       coordinateX: { $gte: coordinateX2, $lte: coordinateX1 },
       coordinateY: { $gte: coordinateY2, $lte: coordinateY1 }
     })
+    if(!locations) {
+        throw new APIError(
+            errors.LOCATION_NOTFOUND_ERROR.statusCode,
+            errors.LOCATION_NOTFOUND_ERROR.errorCode,
+            errors.LOCATION_NOTFOUND_ERROR.errorMsg,
+        )
+    }
     return locations;
 }
 
@@ -145,7 +152,11 @@ const registLocationService = async (shopName, coordinateX, coordinateY) => {
         });
         return location;
     } catch(error) {
-
+        throw new APIError(
+            errors.COURSE_REGIST_ERROR.statusCode,
+            errors.COURSE_REGIST_ERROR.errorCode,
+            errors.COURSE_REGIST_ERROR.errorMsg,
+        )
     }
 }
 

@@ -1,7 +1,7 @@
 import asyncWrapper from "../util/asyncWrapper";
 import httpStatus from "http-status";
 import { clientService } from "../service";
-import { Request, Response } from "express";
+import { Request, Response, query } from "express";
 
 /**
  * 간편로그인 리다이렉트 - 컨트롤러
@@ -21,13 +21,14 @@ const callBackRedirectInner = (req, res) => {
  */
 const addDataInner = async (req, res) => {
   const userId = res.app.user.id;
-  const { nickName, gender, local, birthDay } = req.body;
+  const { nickName, gender, local, birthDay, imgName } = req.body;
   const userAddData = await clientService.loginLogAddData({
     userId,
     nickName,
     gender,
     local,
     birthDay,
+    imgName
   });
   return res.status(httpStatus.OK).json({ userAddData });
 };
@@ -80,9 +81,13 @@ const deactivateUserInfoInner = async (req, res) => {
 
 const uploadProfileInner = async (req, res) => {
   const signedUrlPut = await clientService.uploadProfileCode();
-  return res.status(httpStatus.OK).json(
-    {"filename" : signedUrlPut}
-    );
+  return res.status(httpStatus.OK).json(signedUrlPut);
+}
+
+const downloadProfileInner = async (req, res) => {
+  const { filename } = req.query;
+  const imageUrl = await clientService.downloadProfileCode(filename);
+  return res.status(httpStatus.OK).json(imageUrl);
 }
 
 export const callBackRedirect = callBackRedirectInner;
@@ -92,3 +97,4 @@ export const showData = asyncWrapper(showDataInner);
 export const showFriendData = asyncWrapper(showFriendDataInner);
 export const deactivateUserInfo = asyncWrapper(deactivateUserInfoInner);
 export const uploadProfileCode = asyncWrapper(uploadProfileInner);
+export const downloadProfileCode = asyncWrapper(downloadProfileInner);

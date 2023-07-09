@@ -55,17 +55,6 @@ const deleteCourseInner = async (req, res) => {
 
 
 /**
- * 장소 생성 - 컨트롤러
- * @param {Request} req 
- * @param {Response} res
- */
-const addLocationInner = async (req, res) => {
-    const { locationName, region, locationX, locationY, category } = req.body;
-    const locationCode = await courseService.addLocationService(locationName, region, locationX, locationY, category);
-    return res.status(httpStatus.OK).json({ locationCode });
-}
-
-/**
  * 장소 검색 - 컨트롤러
  * @param {Request} req 
  * @param {Response} res
@@ -102,7 +91,6 @@ const registLocationInner = async (req, res) => {
 
 
 export const generateCourse = asyncWrapper(generateCourseInner);
-export const addLocation = asyncWrapper(addLocationInner);
 export const deleteCourse = asyncWrapper(deleteCourseInner);
 export const modifyCourse = asyncWrapper(modifyCourseInner);
 export const viewCourse = asyncWrapper(viewCourseInner);

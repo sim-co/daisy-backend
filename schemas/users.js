@@ -54,7 +54,12 @@ const userSchema = new Schema({
     required: false, 
     unique: false,
   },
-
+  imgName: {
+    type: String,
+    required: false, 
+    unique: false
+  },
+  
   // 친구 연결
   connection: {
     type: Boolean,

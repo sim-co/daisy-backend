@@ -72,6 +72,11 @@ const errors = {
     statusCode: 400,
     errorMsg: "이미 친구추가가 끊어짐"
   },
+  COURSE_REGIST_ERROR: {
+    errorCode: "COURSE_REGIST_ERROR",
+    statusCode: 400,
+    errorMsg: "장소를 등록하는데 실패했습니다."
+  },
 
   COURSE_DELETE_ERROR: {
     errorCode: "COURSE_DELETE_ERROR",
@@ -83,6 +88,12 @@ const errors = {
     errorCode: "FILE_UPLOAD_ERROR",
     statusCode: 400,
     errorMsg: "파일 업로드 에러. 다시 시도하세요."
+  },
+
+  FILE_DOWNLOAD_ERROR: {
+    errorCode: "FILE_DOWNLOAD_ERROR",
+    statusCode: 400,
+    errorMsg: "파일 다운로드 에러. 다시 시도하세요."
   },
 };
 
