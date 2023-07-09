@@ -3,7 +3,7 @@ import errors from "../util/errors";
 import User from "../../schemas/users";
 
 /**
- * 나의 친구코드를 만들어준다.
+ * 친구 코드 생성 - 서비스
  * @param {Stirng} myId
  */
 const generateFriendCode =  async (myId) => {
@@ -22,6 +22,9 @@ const generateFriendCode =  async (myId) => {
     }
 }
 
+/**
+ * 친구 코드 연결 - 서비스
+ */
 const connectCode = async ({myId, friendConnectionCode}) => {
     try {
         const friend_db = await User.findOne({my_connection_id : friendConnectionCode});
@@ -61,6 +64,9 @@ const connectCode = async ({myId, friendConnectionCode}) => {
     }
 }
 
+/**
+ * 친구 코드 끊기 - 서비스
+ */
 const disconnectFriendCode = async (myId) => {
     if (!await checkConnection(myId)) {
         throw new APIError(
@@ -83,6 +89,9 @@ const disconnectFriendCode = async (myId) => {
     return myInformation ;
 }
 
+/**
+ * 친구연결 확인 - 서비스
+ */
 const checkConnection = async (myId) => {
     if (!await checkConnection(myId)) {
         throw new APIError(
@@ -95,6 +104,9 @@ const checkConnection = async (myId) => {
     return myInformation.connection;
 }
 
+/**
+ * 친구코드 확인 - 서비스
+ */
 const showMyFriendCode = async (myId) => {
     if (!await checkConnection(myId)) {
         throw new APIError(

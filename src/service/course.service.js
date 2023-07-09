@@ -6,10 +6,9 @@ import Course from '../../schemas/courses';
 import Place from "../../schemas/places";
 
 /**
- * 데이트 코스 추가
+ * 데이트 코스 추가 - 서비스
  * @param {String} myId
  */
-
 const generateCourseService = async ({myId, courseName, courseData}) => {
     try {
         const userInfo = await User.findById(myId);
@@ -36,8 +35,11 @@ const generateCourseService = async ({myId, courseName, courseData}) => {
     }
 }
 
+/**
+ * 데이트 코스 보여주기 - 서비스
+ */
 const viewCourseService = async (myId) => {
-    // try {
+    try {
         const userInfo = await User.findById(myId);
 
         console.log("hi",userInfo);
@@ -54,11 +56,14 @@ const viewCourseService = async (myId) => {
         console.log(course);
         return course;
 
-    // } catch(e) {
-    //     throw e;
-    // }
+    } catch(e) {
+        throw e;
+    }
 }
 
+/**
+ * 데이트 코스 수정 - 서비스
+ */
 const modifyCourseService = async ({myId, courseName, courseData}) => {
     try {
         const userInfo = await User.findById(myId);
@@ -84,6 +89,9 @@ const modifyCourseService = async ({myId, courseName, courseData}) => {
     }
 }
 
+/**
+ * 데이트 코스 삭제 - 서비스
+ */
 const deleteCourseService = async (myId, courseId) => {
         if(!await Course.findOne({users : myId})) {
             throw new APIError(
@@ -97,6 +105,9 @@ const deleteCourseService = async (myId, courseId) => {
         return course;
 }
 
+/**
+ * 장소검색 - 서비스
+ */
 const searchLocationService = async (locationId) => {
     try{
         const coordinate = await Place.findById(locationId);
@@ -110,6 +121,9 @@ const searchLocationService = async (locationId) => {
     }
 }
 
+/**
+ * 좌표범위 내 장소 검색 - 서비스
+ */
 const getPlacesInLatLngRangeService = async (coordinateX1, coordinateY1, coordinateX2, coordinateY2) => {
     // 범위 내 검색
     const locations = Place.find({
@@ -119,6 +133,9 @@ const getPlacesInLatLngRangeService = async (coordinateX1, coordinateY1, coordin
     return locations;
 }
 
+/**
+ * 장소 추가 - 서비스
+ */
 const registLocationService = async (shopName, coordinateX, coordinateY) => {
     try{
         const location = await Place.create({

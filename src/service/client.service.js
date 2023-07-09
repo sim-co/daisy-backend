@@ -4,6 +4,10 @@ import querystring from "querystring";
 import { generateAccessToken, generateRefreshToken } from "../util/jwt";
 import User from "../../schemas/users";
 import { body } from "express-validator";
+import AWS from "aws-sdk";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 /**
  * access, refresh 토큰을 query에 담은 뒤 query값을 리턴
@@ -11,7 +15,6 @@ import { body } from "express-validator";
  */
 const generateQueryService = (userId) => {
     const accessToken = generateAccessToken(userId);
-    console.log(accessToken);
     const refreshToken = generateRefreshToken(userId);
     const query = querystring.stringify({
         access: accessToken,
@@ -21,7 +24,7 @@ const generateQueryService = (userId) => {
 }
 
 /**
- * loginLog를 확인해서 
+ * loginLog를 확인해서 False인 유저들은 add data 진행 - 서비스
  * @param {String} id 
  * @param {String} nickName 
  * @param {String} gender 
@@ -58,6 +61,9 @@ const loginLogAddData = async ({ userId, nickName, gender, local, birthDay }) =>
       }
 }
 
+/**
+ * 유저 업데이트 - 서비스
+ */
 const userUdpate = async (myId, body) => {
   const { nickName, gender, local, birthDay } = body;
   const updatedUser = await User.findByIdAndUpdate(myId, {
@@ -69,6 +75,9 @@ const userUdpate = async (myId, body) => {
   return updatedUser;
 }
 
+/**
+ * 유저 보여주기 - 서비스
+ */
 const showData = async (myId) => {
   const myData = await User.findById(myId);
   if(!myData) {
@@ -81,12 +90,18 @@ const showData = async (myId) => {
   return myData;
 }
 
+/**
+ * 친구 보여주기 - 서비스
+ */
 const showFriendData = async (friendCode) => {
   const friendInfo = await User.findOne({my_connection_id: friendCode});
   // const friendData = await User.findById(friendInfo.id);
   return friendInfo;
 }
 
+/**
+ * 계정탈퇴 - 서비스
+ */
 const deactivateUserInfo = async (myId) => {
   try {
     const datadel = await User.deleteOne({ _id: myId });
@@ -97,11 +112,42 @@ const deactivateUserInfo = async (myId) => {
   }
 }
 
+/**
+ * 이미지 업로드 - 서비스
+ */
+const uploadProfileCode = async () => {
+  const s3 = new AWS.S3({
+    accessKeyId: process.env.S3_ACCESS_KEY,
+    secretAccessKey: process.env.S3_SECRET_ACCESS_KEY,
+    region: process.env.S3_REGION
+  });
+  const filename = Date.now() + '-' + Math.random().toString(36).substring(2, 7).toUpperCase();
+  console.log(filename);
+  const params = {
+    Bucket: process.env.S3_BUCKET_NAME,
+    Key: filename,
+    Expires: 60*60*3,
+  };
+
+  try {
+    const signedUrlPut = await s3.getSignedUrlPromise("putObject", params);
+    return signedUrlPut;
+  } catch(error) {
+    console.log(error);
+    throw new APIError(
+      errors.FILE_UPLOAD_ERROR.statusCode,
+      errors.FILE_UPLOAD_ERROR.errorCode,
+      errors.FILE_UPLOAD_ERROR.errorMsg
+    )
+  } 
+}
+
 export default {
     generateQueryService,
     loginLogAddData,
     userUdpate,
     showData,
     showFriendData,
-    deactivateUserInfo
+    deactivateUserInfo,
+    uploadProfileCode
 }

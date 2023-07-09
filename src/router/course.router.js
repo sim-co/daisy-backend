@@ -115,11 +115,27 @@ router.patch('/modify-course', verifyToken, modifyCourse);
 
 /**
  * @swagger
- *
- * /course/del-course/:myId/:courseId:
+ * /course/del-course/{courseId}:
  *   delete:
- *     summary: "데이트코스 삭제"
- *     description: "데이트 코스를 삭제한다."
+ *     summary: 데이트코스 삭제
+ *     description: 해당 courseId (MongoDB ID)를 파라미터로 입력하여 데이트 코스를 삭제합니다.
+ *     tags:
+ *       - course
+ *     parameters:
+ *       - name: courseId
+ *         in: path
+ *         description: 삭제할 데이트 코스의 고유 ID (MongoDB ID)
+ *         required: true
+ */ 
+router.delete('/del-course/:courseId', verifyToken, deleteCourse);
+
+/**
+ * @swagger
+ *
+ * /course/view-course:
+ *   post:
+ *     summary: "데이트코스 보여주기"
+ *     description: "데이트 코스를 추가한다."
  *     tags: [course]
  *     requestBody:
  *       required: true
@@ -158,8 +174,6 @@ router.patch('/modify-course', verifyToken, modifyCourse);
  *       200:
  *         description: OK
  */
-router.delete('/del-course/:courseId', verifyToken, deleteCourse);
-
 router.get('/view-course', verifyToken, viewCourse);
 
 router.post('/add-location', verifyToken, addLocation);

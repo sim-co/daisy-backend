@@ -3,9 +3,8 @@ import httpStatus from "http-status";
 import { friendService } from "../service";
 import { Request, Response } from "express";
 
-// 친구코드 생성
 /**
- * 
+ * 친구코드 생성 - 컨트롤러
  * @param {Request} req 
  * @param {Response} res
  */
@@ -15,9 +14,8 @@ const generateMyFriendCodeInner = async (req, res) => {
     return res.status(httpStatus.OK).json({ userFriendCode });
 }
 
-// 친구코드 연결
 /**
- * 
+ * 친구코드 연결 - 컨트롤러
  * @param {Request} req 
  * @param {Response} res
  */
@@ -29,9 +27,8 @@ const FriendCodeConnectInner = async (req, res) => {
     return res.status(httpStatus.OK).json({userConnectCode});
 }
 
-// 친구 연결 끊기
 /**
- * 
+ * 친구연결 끊기 - 컨트롤러
  * @param {Request} req 
  * @param {Response} res
  */
@@ -41,7 +38,12 @@ const FriendDisconnectInner = async (req, res) => {
     return res.status(httpStatus.OK).json({ message: '친구 연결이 끊어졌습니다.'});
 }
 
-// 내 친구가 누군지 알려주는 API
+
+/**
+ * 내 친구가 누군지 알려주는 API - 컨트롤러
+ * @param {Request} req 
+ * @param {Response} res
+ */
 const showMyFriendInner = async (req, res) => {
     const myId = res.app.user.id;
     const friendName = await friendService.showMyFriendCode(myId);

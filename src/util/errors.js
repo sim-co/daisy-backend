@@ -78,6 +78,12 @@ const errors = {
     statusCode: 400,
     errorMsg: "코스가 존재하지 않거나 ID값이 일치하지않아 삭제할 수 없습니다."
   },
+
+  FILE_UPLOAD_ERROR: {
+    errorCode: "FILE_UPLOAD_ERROR",
+    statusCode: 400,
+    errorMsg: "파일 업로드 에러. 다시 시도하세요."
+  },
 };
 
 export default errors;

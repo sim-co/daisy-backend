@@ -25,7 +25,6 @@ export function verifyToken(req, res, next) {
       } else {
         const user = await User.findById(myToken.userid);
         res.app.user = user;
-        console.log(res.app.user);
       }
       // 이부분이 문제, 만약 엑세스 토큰을 재발급된 했을 경우 프론트에 이 재발급된 토큰을 어떻게 전달할지?
       return next();

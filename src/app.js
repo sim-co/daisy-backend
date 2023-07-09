@@ -10,7 +10,6 @@ const app = express();
 dotenv.config();
 const port = process.env.PORT;
 
-
 // 몽고 디비 연결
 connect(); 
 
@@ -40,18 +39,8 @@ app.get("/", (req, res) => {
 })
 
 // 라우터 모음
-
-
 import router from "./router/index";
 app.use(router);
-
-
-// import friendconnect from "./route/friend-connect";
-// app.use("/friend-connect", friendconnect);
-
-
-// import main from "./route/main";
-// app.use('/main',main);
 
 app.use((err, req, res, next) => {
   const { statusCode, errorCode, errorMsg } = err

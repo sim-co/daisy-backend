@@ -11,7 +11,9 @@ import { callBackRedirect,
          updateData,
          showData,
          showFriendData,
-         deactivateUserInfo } from "../controller/client.controller";
+         deactivateUserInfo,
+         uploadProfile, 
+         uploadProfileCode} from "../controller/client.controller";
 
 const router = Router();
 
@@ -51,7 +53,7 @@ router.get("/naver", passport.authenticate("naver"));
  *    summary: "네이버 Oauth callBack URL"
  *    description: "회원가입 또는 로그인 처리 성공시 추가데이터를 적지않았다면 /client/add-data, 추가데이터를 적었다면 /main 으로 refreshTK, accessTK을 querystring으로담아 redirect시킨다. 로그인실패시 /fail로 redirect된다."
  *    tags: [client]
-*/
+ */
 router.get("/naver/callback", passport.authenticate("naver", {failureRedirect: "/client/fail"}), callBackRedirect);
 
 /**
@@ -236,7 +238,6 @@ router.post("/add-data", verifyToken, addData);
  *                   gender: male
  *                   local: korea
  *                   birthDay: 1996-03-02
- *                   loginLog: true
  *
  */
 router.patch("/update-data", verifyToken, updateData);
@@ -293,50 +294,6 @@ router.patch("/update-data", verifyToken, updateData);
  *                 nickName:
  *                   type: string
  *                   description: 사용자 닉네임
- *       '404':
- *         description: Not Found
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 errorCode:
- *                   type: string
- *                   description: 클라이언트가 존재하지 않을 때의 에러 코드
- *                 errorMessage:
- *                   type: string
- *                   description: 클라이언트가 존재하지 않을 때의 에러 메시지
- *       '401':
- *         description: UnAuthorized
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 errorCode:
- *                   type: string
- *                   description: UnAuthorized
- *                 errorMessage:
- *                   type: string
- *                   description: UnAuthorized
- *       '500':
- *         description: Internal Server Error
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 errorCode:
- *                   type: string
- *                   description: 사용자 정보를 업데이트하는 과정에서 오류가 발생했을 때의 에러 코드
- *                 errorMessage:
- *                   type: string
- *                   description: 사용자 정보를 업데이트하는 과정에서 오류가 발생했을 때의 에러 메시지
- *     securitySchemes:
- *       verifyToken:
- *         type: apiKey
- *         in: header
- *         name: Authorization  # 요청 헤더에 Authorization 필드에 토큰을 추가
  */
 router.get("/show-data", verifyToken, showData);
 
@@ -402,50 +359,6 @@ router.get("/show-data", verifyToken, showData);
  *                 nickName:
  *                   type: string
  *                   description: 사용자 닉네임
- *       '404':
- *         description: Not Found
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 errorCode:
- *                   type: string
- *                   description: 클라이언트가 존재하지 않을 때의 에러 코드
- *                 errorMessage:
- *                   type: string
- *                   description: 클라이언트가 존재하지 않을 때의 에러 메시지
- *       '401':
- *         description: UnAuthorized
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 errorCode:
- *                   type: string
- *                   description: UnAuthorized
- *                 errorMessage:
- *                   type: string
- *                   description: UnAuthorized
- *       '500':
- *         description: Internal Server Error
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 errorCode:
- *                   type: string
- *                   description: 사용자 정보를 업데이트하는 과정에서 오류가 발생했을 때의 에러 코드
- *                 errorMessage:
- *                   type: string
- *                   description: 사용자 정보를 업데이트하는 과정에서 오류가 발생했을 때의 에러 메시지
- *     securitySchemes:
- *       verifyToken:
- *         type: apiKey
- *         in: header
- *         name: Authorization  # 요청 헤더에 Authorization 필드에 토큰을 추가
  */
 router.get("/show-friend-data", verifyToken, showFriendData);
 
@@ -453,7 +366,7 @@ router.get("/show-friend-data", verifyToken, showFriendData);
  * @swagger
  *
  * /client/deactivate:
- *   get:
+ *   delete:
  *     summary: "회원 탈퇴"
  *     description: "회원 탈퇴 API"
  *     tags: [client]
@@ -466,59 +379,13 @@ router.get("/show-friend-data", verifyToken, showFriendData);
  *           schema:
  *             type: object
  *             properties:
- *               friendCode:
- *                 type: string
- *                 description: 친구 코드
  *     responses:
  *       '200':
  *         description: OK
- *       '404':
- *         description: Not Found
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 errorCode:
- *                   type: string
- *                   description: 클라이언트가 존재하지 않을 때의 에러 코드
- *                 errorMessage:
- *                   type: string
- *                   description: 클라이언트가 존재하지 않을 때의 에러 메시지
- *       '401':
- *         description: UnAuthorized
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 errorCode:
- *                   type: string
- *                   description: UnAuthorized
- *                 errorMessage:
- *                   type: string
- *                   description: UnAuthorized
- *       '500':
- *         description: Internal Server Error
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 errorCode:
- *                   type: string
- *                   description: 사용자 정보를 업데이트하는 과정에서 오류가 발생했을 때의 에러 코드
- *                 errorMessage:
- *                   type: string
- *                   description: 사용자 정보를 업데이트하는 과정에서 오류가 발생했을 때의 에러 메시지
- *     securitySchemes:
- *       verifyToken:
- *         type: apiKey
- *         in: header
- *         name: Authorization  # 요청 헤더에 Authorization 필드에 토큰을 추가
  */
-router.delete("/deactivate",verifyToken, deactivateUserInfo);
+router.delete("/deactivate", verifyToken, deactivateUserInfo);
 
+router.post("/profile-upload", verifyToken, uploadProfileCode);
 
 
 export default router;
