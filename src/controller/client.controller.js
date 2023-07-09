@@ -10,33 +10,39 @@ import { Request, Response } from "express";
  */
 const callBackRedirectInner = (req, res) => {
   const query = clientService.generateQueryService(req.user.id);
-  // res.redirect("daisy-app://?" + query);
-  res.redirect("/data-test" + query);
-}
+  res.redirect("daisy-app://?" + query);
+  // res.redirect("/data-test" + query);
+};
 
 /**
- * 유저 추가데이터 추가 - 컨트롤러
+ * 
  * @param {Request} req 
  * @param {Response} res
  */
 const addDataInner = async (req, res) => {
   const userId = res.app.user.id;
   const { nickName, gender, local, birthDay } = req.body;
-  const userAddData = await clientService.loginLogAddData({ userId, nickName, gender, local, birthDay });
+  const userAddData = await clientService.loginLogAddData({
+    userId,
+    nickName,
+    gender,
+    local,
+    birthDay,
+  });
   return res.status(httpStatus.OK).json({ userAddData });
-}
+};
 
 
 /**
- * 유저 추가데이터 수정 - 컨트롤러
+ * 
  * @param {Request} req 
  * @param {Response} res
  */
 const updateDataInner = async (req, res) => {
   const myId = res.app.user.id;
   const userUpdateData = await clientService.userUdpate(myId, req.body);
-  return res.status(httpStatus.OK).json({ userUpdateData })
-}
+  return res.status(httpStatus.OK).json({ userUpdateData });
+};
 
 
 /**
@@ -47,8 +53,8 @@ const updateDataInner = async (req, res) => {
 const showDataInner = async (req, res) => {
   const myId = res.app.user.id;
   const userData = await clientService.showData(myId);
-  return res.status(httpStatus.OK).json({userData});
-}
+  return res.status(httpStatus.OK).json({ userData });
+};
 
 /**
  * 친구 데이터 보여주기 - 컨트롤러
@@ -58,8 +64,8 @@ const showDataInner = async (req, res) => {
 const showFriendDataInner = async (req, res) => {
   const { friendCode } = req.body;
   const friendData = await clientService.showFriendData(friendCode);
-  return res.status(httpStatus.OK).json({friendData});
-}
+  return res.status(httpStatus.OK).json({ friendData });
+};
 
 /**
  * 계정 탈퇴 - 컨트롤러
@@ -69,8 +75,8 @@ const showFriendDataInner = async (req, res) => {
 const deactivateUserInfoInner = async (req, res) => {
   const myId = res.app.user.id;
   const deldata = await clientService.deactivateUserInfo(myId);
-  return res.status(httpStatus.OK).json({deldata});
-}
+  return res.status(httpStatus.OK).json({ deldata });
+};
 
 const uploadProfileInner = async (req, res) => {
   const signedUrlPut = await clientService.uploadProfileCode();
@@ -85,4 +91,3 @@ export const updateData = asyncWrapper(updateDataInner);
 export const showData = asyncWrapper(showDataInner);
 export const showFriendData = asyncWrapper(showFriendDataInner);
 export const deactivateUserInfo = asyncWrapper(deactivateUserInfoInner);
-export const uploadProfileCode = asyncWrapper(uploadProfileInner);
